@@ -24,7 +24,9 @@ return {
       colorscheme = "catppuccin-frappe",
     },
   },
-
+  {
+    "tpope/vim-sleuth",
+  },
 }
 -- return {
 --   -- add gruvbox
