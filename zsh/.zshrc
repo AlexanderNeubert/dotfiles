@@ -15,14 +15,15 @@ ZSH_THEME=""
 plugins=(git zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
+# homebrew
 export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export PATH=$PATH:/opt/homebrew/bin
-export MAVEN_HOME=/usr/local/Cellar/maven/3.8.4
-export PATH=$PATH:/opt/homebrew/Cellar/postgresql@16/16.6/bin
-export PATH=$MAVEN_HOME/bin:$PATH
-export PATH="$HOME/.jenv/bin:$PATH"
 export PATH=/Users/ane/.local/bin:$PATH
+
+# Emacs
 export PATH=$HOME/.config/emacs/bin:$PATH
+
+# Go
 export PATH=$HOME/go/bin:$PATH
 
 # C#
@@ -30,17 +31,16 @@ export PATH=$PATH:/usr/local/share/dotnet
 export DOTNET_ROOT=/usr/local/share/dotnet
 # Add .NET Core SDK tools
 export PATH="$PATH:/Users/ane/.dotnet/tools"
-# eval "$(jenv init -)"
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # StarShip init
 eval "$(starship init zsh)"
 
 #Zoxide init
 eval "$(zoxide init zsh)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
