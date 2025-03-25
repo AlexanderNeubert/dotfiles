@@ -12,7 +12,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 
 #Plugins
-plugins=(git zsh-autosuggestions)
+plugins=(zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # homebrew
@@ -31,6 +31,16 @@ export PATH=$PATH:/usr/local/share/dotnet
 export DOTNET_ROOT=/usr/local/share/dotnet
 # Add .NET Core SDK tools
 export PATH="$PATH:/Users/ane/.dotnet/tools"
+
+# Postgresql
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/ane/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 
 # StarShip init
 eval "$(starship init zsh)"
