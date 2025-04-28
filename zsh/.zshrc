@@ -12,13 +12,16 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 
 #Plugins
-plugins=(zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
 
 # homebrew
 export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export PATH=$PATH:/opt/homebrew/bin
 export PATH=/Users/ane/.local/bin:$PATH
+
+#XDG_CONFIG_HOME
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # Emacs
 export PATH=$HOME/.config/emacs/bin:$PATH
@@ -42,11 +45,28 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
+#LazyDocker
+export DOCKER_HOST=unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')
+
 # StarShip init
 eval "$(starship init zsh)"
 
 #Zoxide init
 eval "$(zoxide init zsh)"
+
+function nvims() {
+  items=("default" "kickstart")
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  NVIM_APPNAME=$config nvim $@
+}
+
+bindkey -s ^a "nvims\n"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -138,3 +158,8 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+alias nvim-kick="NVIM_APPNAME=kickstart nvim"
+
+alias tmux='tmux attach || tmux'
+

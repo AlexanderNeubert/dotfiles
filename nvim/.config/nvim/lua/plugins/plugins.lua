@@ -9,21 +9,33 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
+  -- {
+  --   "folke/tokyonight.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {
+  --     -- transparent = true,
+  --   },
+  -- },
   {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {
-      transparent = true,
-    },
+    "rebelot/kanagawa.nvim",
   },
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight",
+      colorscheme = "kanagawa",
     },
-  }
+  },
+
+  {
+  "williamboman/mason.nvim",
+  opts = {
+    ensure_installed = {
+    },
+  },
+},
+
 }
 -- return {
 --   -- add gruvbox
