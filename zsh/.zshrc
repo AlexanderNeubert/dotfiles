@@ -162,4 +162,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 alias nvim-kick="NVIM_APPNAME=kickstart nvim"
 
 alias tmux='tmux attach || tmux'
+alias zellij='zellij -l "welcome"'
 
+alias ls="eza --icons=always"
+alias cd="z"
