@@ -12,7 +12,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 
 #Plugins
-plugins=(zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
+plugins=(zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
 
 # homebrew
@@ -35,16 +35,6 @@ export DOTNET_ROOT=/usr/local/share/dotnet
 # Add .NET Core SDK tools
 export PATH="$PATH:/Users/ane/.dotnet/tools"
 
-# Postgresql
-export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="/Users/ane/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
 #LazyDocker
 export DOCKER_HOST=unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')
 
@@ -54,8 +44,14 @@ eval "$(starship init zsh)"
 #Zoxide init
 eval "$(zoxide init zsh)"
 
+#Atuin init
+eval "$(atuin init zsh)"
+
+# Mutliple nvim configurations
+# alias kickstartnvim='NVIM_APPNAME=Kickstart nvim'
+#
 # function nvims() {
-#   items=("default" "kickstart")
+#   items=("default" "Kickstart")
 #   config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
 #   if [[ -z $config ]]; then
 #     echo "Nothing selected"
@@ -65,12 +61,8 @@ eval "$(zoxide init zsh)"
 #   fi
 #   NVIM_APPNAME=$config nvim $@
 # }
-#
-# bindkey -s ^a "nvims\n"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# bindkey -s ^a "nvims\n"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -160,7 +152,10 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias tmux='tmux attach || tmux'
-alias zellij='zellij -l "welcome"'
 
-alias ls="eza --icons=always"
+alias ls="eza -a -l --icons=always"
 alias cd="z"
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
