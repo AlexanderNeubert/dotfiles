@@ -36,7 +36,7 @@ config.term = "xterm-256color"
 
 config.color_scheme = "Kanagawa (Gogh)"
 
-config.font = wezterm.font("MesloLGS Nerd Font Mono")
+config.font = wezterm.font("CaskaydiaMono Nerd Font")
 config.font_size = 14
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 10
@@ -67,22 +67,22 @@ config.keys = {
 	},
 	{
 		key = "h",
-		mods = "CTRL",
+		mods = "CTRL|ALT",
 		action = action.ActivatePaneDirection("Left"),
 	},
 	{
 		key = "j",
-		mods = "CTRL",
+		mods = "CTRL|ALT",
 		action = action.ActivatePaneDirection("Down"),
 	},
 	{
 		key = "k",
-		mods = "CTRL",
+		mods = "CTRL|ALT",
 		action = action.ActivatePaneDirection("Up"),
 	},
 	{
 		key = "l",
-		mods = "CTRL",
+		mods = "CTRL|ALT",
 		action = action.ActivatePaneDirection("Right"),
 	},
 	{
