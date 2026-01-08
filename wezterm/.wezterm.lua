@@ -1,27 +1,3 @@
--- -- Pull in the wezterm API
--- local wezterm = require 'wezterm'
---
--- -- This will hold the configuration.
--- local config = wezterm.config_builder()
---
--- -- This is where you actually apply your config choices
---
--- -- Font
--- config.font = wezterm.font("MesloLGS Nerd Font Mono")
--- config.font_size = 14.0
---
--- config.enable_tab_bar = false
---
--- config.window_background_opacity = 0.9
--- config.macos_window_background_blur = 10
---
---
--- -- For example, changing the color scheme:
--- config.color_scheme = 'Kanagawa (Gogh)'
---
--- -- and finally, return the configuration to wezterm
--- return config
---
 local wezterm = require("wezterm")
 local mux = wezterm.mux
 
@@ -34,10 +10,10 @@ local config = wezterm.config_builder()
 
 config.term = "xterm-256color"
 
-config.color_scheme = "Kanagawa (Gogh)"
+config.color_scheme = "Tokyo Night Storm (Gogh)"
 
 config.font = wezterm.font("CaskaydiaMono Nerd Font")
-config.font_size = 14
+config.font_size = 12
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 10
 config.window_decorations = "RESIZE"
@@ -49,6 +25,10 @@ config.window_padding = {
 	left = 10,
 	right = 10,
 }
+
+-- Plugin: bar.wezterm
+local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+bar.apply_to_config(config)
 
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
 
@@ -67,42 +47,42 @@ config.keys = {
 	},
 	{
 		key = "h",
-		mods = "CTRL|ALT",
+		mods = "CMD",
 		action = action.ActivatePaneDirection("Left"),
 	},
 	{
 		key = "j",
-		mods = "CTRL|ALT",
+		mods = "CMD",
 		action = action.ActivatePaneDirection("Down"),
 	},
 	{
 		key = "k",
-		mods = "CTRL|ALT",
+		mods = "CMD",
 		action = action.ActivatePaneDirection("Up"),
 	},
 	{
 		key = "l",
-		mods = "CTRL|ALT",
+		mods = "CMD",
 		action = action.ActivatePaneDirection("Right"),
 	},
 	{
 		key = "h",
-		mods = "CTRL|SHIFT",
+		mods = "CMD|SHIFT",
 		action = action.AdjustPaneSize({ "Left", 5 }),
 	},
 	{
 		key = "l",
-		mods = "CTRL|SHIFT",
+		mods = "CMD|SHIFT",
 		action = action.AdjustPaneSize({ "Right", 5 }),
 	},
 	{
 		key = "j",
-		mods = "CTRL|SHIFT",
+		mods = "CMD|SHIFT",
 		action = action.AdjustPaneSize({ "Down", 5 }),
 	},
 	{
 		key = "k",
-		mods = "CTRL|SHIFT",
+		mods = "CMD|SHIFT",
 		action = action.AdjustPaneSize({ "Up", 5 }),
 	},
 	{
@@ -110,7 +90,11 @@ config.keys = {
 		mods = "LEADER",
 		action = action.TogglePaneZoomState,
 	},
-	{ key = "[", mods = "LEADER", action = action.ActivateCopyMode },
+	{
+		key = "[",
+		mods = "LEADER",
+		action = action.ActivateCopyMode,
+	},
 	{
 		key = "c",
 		mods = "LEADER",
@@ -125,6 +109,19 @@ config.keys = {
 		key = "n",
 		mods = "LEADER",
 		action = action.ActivateTabRelative(1),
+	},
+	{
+		key = "b",
+		mods = "LEADER",
+		action = action.RotatePanes("CounterClockwise"),
+	},
+	{ key = "n", mods = "LEADER", action = action.RotatePanes("Clockwise") },
+	{
+		key = "s",
+		mods = "CMD",
+		action = action.PaneSelect({
+			mode = "SwapWithActive",
+		}),
 	},
 }
 

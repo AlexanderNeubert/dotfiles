@@ -16,18 +16,9 @@ return {
       colorscheme = "tokyonight",
     },
   },
-
   {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        -- Plugins to be installed with Mason
-      },
-    },
-    {
-      "nvim-lualine/lualine.nvim",
-      enabled = false
-    },
+    "nvim-lualine/lualine.nvim",
+    enabled = false
   },
 }
 -- return {

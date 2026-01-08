@@ -1,6 +1,6 @@
 return {
   {
-    "echasnovski/mini.statusline",
+    "nvim-mini/mini.statusline",
     enabled = true,
     config = function()
       local statusline = require("mini.statusline")

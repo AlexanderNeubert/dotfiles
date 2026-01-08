@@ -35,8 +35,8 @@ default-root-container-orientation = 'auto'
 # Drop it from your config, if you don't like this behavior
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
-# Fallback value (if you omit the key): on-focused-monitor-changed = []
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = "move-mouse window-lazy-center"
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
@@ -61,7 +61,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.bottom = 10
-outer.top = 10
+outer.top = 5
 outer.right = 10
 
 [workspace-to-monitor-force-assignment]
@@ -74,6 +74,9 @@ outer.right = 10
 7 = ['secondary', 'main']
 8 = ['secondary', 'main']
 9 = ['secondary', 'main']
+B = ['secondary', 'main']
+T = ['secondary', 'main']
+C = ['secondary', 'main']
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -137,6 +140,9 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
+alt-b = 'workspace B' # for Browser
+alt-t = 'workspace T' # for Terminal
+alt-c = 'workspace C' # for VSCode
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 # alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
@@ -157,6 +163,11 @@ alt-shift-6 = 'move-node-to-workspace 6'
 alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
+alt-shift-b = 'move-node-to-workspace B' # for Browser
+alt-shift-t = 'move-node-to-workspace T' # for Terminal
+alt-shift-c = 'move-node-to-workspace C' # for VSCode
+
+alt-shift-f = 'fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -188,3 +199,15 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = "move-node-to-workspace T"
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = "move-node-to-workspace B"
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = "move-node-to-workspace C"
