@@ -28,10 +28,11 @@ return {
     "neovim/nvim-lspconfig",
     optional = true,
     opts = function(_, opts)
-      local _ = require("mason.settings").current.install_root_dir
-
       opts.servers = opts.servers or {}
-      opts.servers.roslyn = {}
+      opts.servers.roslyn = {
+        enabled = false,
+        mason = false,
+      }
     end,
   },
 }

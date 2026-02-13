@@ -198,42 +198,6 @@ local get_extra_hl = function(C)
       link = "YankyPut",
     },
 
-    -- nvim-web-devicons
-    DevIconDefault = { fg = C.red },
-    DevIconfolder = { fg = C.blue },
-    DevIconc = { fg = C.blue },
-    DevIconcss = { fg = C.blue },
-    DevIcondeb = { fg = C.teal },
-    DevIconDockerfile = { fg = C.teal },
-    DevIconhtml = { fg = C.maroon },
-    DevIconjpeg = { fg = C.dark_purple },
-    DevIconjpg = { fg = C.dark_purple },
-    DevIconjs = { fg = C.sun },
-    DevIconkt = { fg = C.peach },
-    DevIconlock = { fg = C.red },
-    DevIconlua = { fg = C.blue },
-    DevIconmp3 = { fg = C.text },
-    DevIconmp4 = { fg = C.text },
-    DevIconout = { fg = C.text },
-    DevIconpng = { fg = C.dark_purple },
-    DevIconpy = { fg = C.teal },
-    DevIcontoml = { fg = C.blue },
-    DevIconts = { fg = C.teal },
-    DevIconttf = { fg = C.text },
-    DevIconrb = { fg = C.pink },
-    DevIconrpm = { fg = C.peach },
-    DevIconvue = { fg = C.vibrant_green },
-    DevIconwoff = { fg = C.text },
-    DevIconwoff2 = { fg = C.text },
-    DevIconxz = { fg = C.sun },
-    DevIconzip = { fg = C.sun },
-    DevIconZig = { fg = C.peach },
-    DevIconMd = { fg = C.blue },
-    DevIconTSX = { fg = C.blue },
-    DevIconJSX = { fg = C.blue },
-    DevIconSvelte = { fg = C.red },
-    DevIconJava = { fg = C.peach },
-    DevIconDart = { fg = C.teal },
 
     -- blink.cmp
     BlinkCmpKindAvante = { fg = C.teal },
@@ -359,31 +323,11 @@ local get_overrides_hl = function(C)
     GitConflictAncestorLabel = { bg = U.darken(gitColors.ancestor, 0.4, C.mantle) },
     GitConflictAncestor = { bg = U.darken(gitColors.ancestor, 0.2, C.mantle) },
 
-    -- avante.nvim
-    AvanteConflictCurrentLabel = { link = "GitConflictCurrentLabel" },
-    AvanteConflictCurrent = { link = "GitConflictCurrent" },
-    AvanteConflictIncomingLabel = { link = "GitConflictIncomingLabel" },
-    AvanteConflictIncoming = { link = "GitConflictIncoming" },
-    AvanteSidebarNormal = { link = "Normal" },
-    AvanteSidebarWinSeparator = { link = "WinSeparator" },
-    AvanteSidebarWinHorizontalSeparator = { link = "WinSeparator" },
-    AvantePromptInputBorder = { link = "FloatBorder" },
-    AvantePopupHint = { fg = C.peach, bold = true },
-    AvanteInlineHint = { fg = C.peach, bold = true },
-
-    -- lsp-lens.nvim
-    LspLens = { link = "LspInlayHint" },
 
     -- nvim-treesitter-context
     TreesitterContext = { fg = C.surface1, bg = constants.blur_background and "NONE" or C.base },
     TreesitterContextLineNumber = { link = "LineNr" },
     TreesitterContextBottom = { style = {} },
-
-    -- nvim spelling
-    SpellBad = { sp = stateColors.error, undercurl = true }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
-    SpellCap = { sp = stateColors.warning, undercurl = true }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
-    SpellLocal = { sp = stateColors.info, undercurl = true }, -- Word that is recognized by the spellchecker as one that is used in another region. |spell| Combined with the highlighting used otherwise.
-    SpellRare = { sp = stateColors.hint, undercurl = true }, -- Word that is recognized by the spellchecker as one that is hardly ever used.  |spell| Combined with the highlighting used otherwise.
 
     -- nvim diagnostics
     ErrorMsg = { fg = stateColors.error }, -- error messages on the command line

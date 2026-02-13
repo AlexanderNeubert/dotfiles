@@ -520,7 +520,7 @@ return {
     cmd = "EmmetInstall",
     init = function()
       vim.g.user_emmet_install_global = 0
-      vim.g.user_emmet_leader_key = "<C-z>"
+      vim.g.user_emmet_leader_key = "<C-y>"
       vim.g.user_emmet_mode = "i"
 
       nvim_utils.autocmd("FileType", {
