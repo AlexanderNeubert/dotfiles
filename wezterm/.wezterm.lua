@@ -10,7 +10,7 @@ local config = wezterm.config_builder()
 
 config.term = "xterm-256color"
 
-config.color_scheme = "Tokyo Night Storm (Gogh)"
+config.color_scheme = "Poimandres"
 
 config.font = wezterm.font("CaskaydiaMono Nerd Font")
 config.font_size = 12
@@ -100,6 +100,11 @@ config.keys = {
 		mods = "LEADER",
 		action = action.SpawnTab("CurrentPaneDomain"),
 	},
+    {
+    key = 'x',
+    mods = 'LEADER',
+    action = wezterm.action.CloseCurrentTab { confirm = true },
+  },
 	{
 		key = "p",
 		mods = "LEADER",
@@ -110,12 +115,16 @@ config.keys = {
 		mods = "LEADER",
 		action = action.ActivateTabRelative(1),
 	},
-	{
-		key = "b",
-		mods = "LEADER",
-		action = action.RotatePanes("CounterClockwise"),
-	},
-	{ key = "n", mods = "LEADER", action = action.RotatePanes("Clockwise") },
+	-- {
+	-- 	key = "b",
+	-- 	mods = "LEADER",
+	-- 	action = action.RotatePanes("CounterClockwise"),
+	-- },
+	-- {
+	-- 	key = "n",
+	-- 	mods = "LEADER",
+	-- 	action = action.RotatePanes("Clockwise"),
+	-- },
 	{
 		key = "s",
 		mods = "CMD",

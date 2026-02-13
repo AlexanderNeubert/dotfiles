@@ -2,10 +2,9 @@ local constants = require "custom.constants"
 local lsp_utils = require "custom.utils.lsp"
 
 -- source: https://github.com/serranomorante/.dotfiles/blob/main/docs/python-dev-setup.md
-local global_python_folder_path = os.getenv "GLOBAL_PYTHON_FOLDER_PATH" or ""
 local venv_path = table.concat({
   "import sys",
-  'sys.path.append("' .. global_python_folder_path .. '/lib/python3.11/site-packages")',
+  'sys.path.append("/lib/python3.11/site-packages")',
   "import pylint_venv",
   "pylint_venv.inithook(force_venv_activation=True, quiet=True)",
 }, "; ")

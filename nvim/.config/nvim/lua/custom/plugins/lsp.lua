@@ -247,36 +247,8 @@ return {
             { "]e", lsp_utils.diagnostic_goto(true, "ERROR"), desc = "Next Diagnostic (Error)" },
           },
         },
-
-        -- example to setup with lua_ls
-        -- lua_ls = {
-        --   enabled = false, -- set to false if you don't want this server
-        --   condition = function () return true end, -- return false if you don't want this server
-        --   mason = false, -- set to false if you don't want this server to be installed with mason
-        --   Use this to add any additional keymaps
-        --   for specific lsp servers
-        --   keys = {},
-        --   settings = {
-        --     Lua = {
-        --       workspace = {
-        --         checkThirdParty = false,
-        --       },
-        --     },
-        --   },
-        -- },
       },
-      -- NOTE: nvim-lspconfig doesn't have the option `setup`
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      setup = {
-        -- example to setup with typescript.nvim
-        -- tsserver = function(_, opts)
-        --   require("typescript").setup({ server = opts })
-        --   return true
-        -- end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
+      setup = {},
     },
     config = vim.schedule_wrap(function(_, opts)
       -- slow down log file growth

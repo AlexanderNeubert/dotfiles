@@ -59,10 +59,9 @@ local function has_prettier_parser(ctx)
   return ok and parser and parser ~= vim.NIL
 end
 
--- TODO: gives error not constants.first_install
-has_prettier_config = lazyvim_utils.memoize(has_prettier_config)
-has_prettier_parser = lazyvim_utils.memoize(has_prettier_parser)
-has_biome_config = lazyvim_utils.memoize(has_biome_config)
+has_prettier_config = lazyvim_utils.safe_memoize(has_prettier_config)
+has_prettier_parser = lazyvim_utils.safe_memoize(has_prettier_parser)
+has_biome_config = lazyvim_utils.safe_memoize(has_biome_config)
 
 return {
   {

@@ -88,92 +88,93 @@ return {
     },
   },
 
-  -- Better text-objects
-  {
-    "nvim-mini/mini.ai",
-    event = { "LazyFile", "VeryLazy" },
-    opts = function()
-      local ai = require "mini.ai"
-      return {
-        n_lines = 500,
-        custom_textobjects = {
-          o = ai.gen_spec.treesitter { -- code block
-            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-          },
-          f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" }, -- function
-          c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" }, -- class
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
-          d = { "%f[%d]%d+" }, -- digits
-          e = { -- Word with case
-            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
-            "^().*()$",
-          },
-          g = mini_utils.mini_ai_buffer, -- buffer
-          u = ai.gen_spec.function_call(), -- u for "Usage"
-          U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- without dot in function name
-        },
-      }
-    end,
-    config = function(_, opts)
-      require("mini.ai").setup(opts)
-      lazy_utils.on_load("which-key.nvim", function()
-        vim.schedule(function()
-          mini_utils.mini_ai_whichkey(opts)
-        end)
-      end)
-    end,
-  },
+  -- -- Better text-objects
+  -- {
+  --   "nvim-mini/mini.ai",
+  --   event = { "LazyFile", "VeryLazy" },
+  --   opts = function()
+  --     local ai = require "mini.ai"
+  --     return {
+  --       n_lines = 500,
+  --       custom_textobjects = {
+  --         o = ai.gen_spec.treesitter { -- code block
+  --           a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+  --           i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+  --         },
+  --         f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" }, -- function
+  --         c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" }, -- class
+  --         t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+  --         d = { "%f[%d]%d+" }, -- digits
+  --         e = { -- Word with case
+  --           { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
+  --           "^().*()$",
+  --         },
+  --         g = mini_utils.mini_ai_buffer, -- buffer
+  --         u = ai.gen_spec.function_call(), -- u for "Usage"
+  --         U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- without dot in function name
+  --       },
+  --     }
+  --   end,
+  --   config = function(_, opts)
+  --     require("mini.ai").setup(opts)
+  --     lazy_utils.on_load("which-key.nvim", function()
+  --       vim.schedule(function()
+  --         mini_utils.mini_ai_whichkey(opts)
+  --       end)
+  --     end)
+  --   end,
+  -- },
 
-  {
-    "johmsalas/text-case.nvim",
-    event = "VeryLazy",
-    keys = {
-      {
-        "gt.",
-        text_case_utils.openSelect,
-        mode = { "n", "v" },
-        desc = "Pick",
-      },
-    },
-    opts = {
-      prefix = "gt",
-      enabled_methods = {
-        "to_snake_case",
-        "to_dash_case",
-        "to_constant_case",
-        "to_camel_case",
-        "to_pascal_case",
-        "to_title_case",
-      },
-    },
-    config = function(_, opts)
-      require("textcase").setup(opts)
+  -- {
+  --   "johmsalas/text-case.nvim",
+  --   event = "VeryLazy",
+  --   keys = {
+  --     {
+  --       "gt.",
+  --       text_case_utils.openSelect,
+  --       mode = { "n", "v" },
+  --       desc = "Pick",
+  --     },
+  --   },
+  --   opts = {
+  --     prefix = "gt",
+  --     enabled_methods = {
+  --       "to_snake_case",
+  --       "to_dash_case",
+  --       "to_constant_case",
+  --       "to_camel_case",
+  --       "to_pascal_case",
+  --       "to_title_case",
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require("textcase").setup(opts)
+  --
+  --     -- create alias for dash-case
+  --     local to_kebab_case = require("textcase.shared.utils").create_wrapped_method(
+  --       "to_dash_case",
+  --       require("textcase.conversions.stringcase").to_dash_case,
+  --       "to-kebab-case"
+  --     )
+  --     local to_title_case = require("textcase.plugin.api").to_title_case
+  --     require("textcase.plugin.plugin").register_keybindings(opts.prefix, to_kebab_case, {
+  --       prefix = opts.prefix,
+  --       quick_replace = "k",
+  --       operator = "ok",
+  --       lsp_rename = "K",
+  --     })
+  --
+  --     -- setup Title Case keymap
+  --     require("textcase.plugin.plugin").register_keybindings(opts.prefix, to_title_case, {
+  --       prefix = opts.prefix,
+  --       quick_replace = "t",
+  --       operator = "ot",
+  --       lsp_rename = "T",
+  --     })
+  --   end,
+  -- },
 
-      -- create alias for dash-case
-      local to_kebab_case = require("textcase.shared.utils").create_wrapped_method(
-        "to_dash_case",
-        require("textcase.conversions.stringcase").to_dash_case,
-        "to-kebab-case"
-      )
-      local to_title_case = require("textcase.plugin.api").to_title_case
-      require("textcase.plugin.plugin").register_keybindings(opts.prefix, to_kebab_case, {
-        prefix = opts.prefix,
-        quick_replace = "k",
-        operator = "ok",
-        lsp_rename = "K",
-      })
-
-      -- setup Title Case keymap
-      require("textcase.plugin.plugin").register_keybindings(opts.prefix, to_title_case, {
-        prefix = opts.prefix,
-        quick_replace = "t",
-        operator = "ot",
-        lsp_rename = "T",
-      })
-    end,
-  },
-
+  -- Only keep Blink active
   {
     "hrsh7th/nvim-cmp",
     enabled = false,
@@ -671,13 +672,15 @@ return {
         "<Tab>",
         function()
           local luasnip = require "luasnip"
-          if luasnip.jumpable(1) then
-            luasnip.jump(1)
+          if luasnip.expand_or_jumpable() then
+            -- insert undo breakpoint
+            keymaps_utils.run_expr "<C-g>u"
+            luasnip.expand_or_jump()
           else
             keymaps_utils.run_expr "<Tab>"
           end
         end,
-        desc = "Snippet Forward",
+        desc = "Snippet Expand Or Forward",
         mode = "i",
       },
       {
@@ -695,35 +698,6 @@ return {
         end,
         desc = "Snippet Backward",
         mode = { "i", "s" },
-      },
-      {
-        "<C-k>",
-        function()
-          local luasnip = require "luasnip"
-          if luasnip.choice_active() then
-            luasnip.change_choice(1)
-            return
-          end
-          -- insert undo breakpoint
-          keymaps_utils.run_expr "<C-g>u"
-
-          vim.schedule(function()
-            require("luasnip").expand()
-          end)
-        end,
-        desc = "Expand Snippet Or Next Choice",
-        mode = "i",
-      },
-      {
-        "<C-S-k>",
-        function()
-          local luasnip = require "luasnip"
-          if luasnip.choice_active() then
-            luasnip.change_choice(-1)
-          end
-        end,
-        desc = "Prev Choice",
-        mode = "i",
       },
     },
     opts = {
@@ -1085,61 +1059,61 @@ return {
     },
   },
 
-  {
-    "gbprod/yanky.nvim",
-    keys = {
-      {
-        "p",
-        "<Plug>(YankyPutAfter)",
-        mode = { "n", "x" },
-        desc = "Paste After Cursor",
-      },
-      {
-        "P",
-        "<Plug>(YankyPutBefore)",
-        mode = { "n", "x" },
-        desc = "Paste Before Cursor",
-      },
-      {
-        "=p",
-        "<Plug>(YankyPutAfterLinewise)",
-        desc = "Paste In Line Below",
-      },
-      {
-        "=P",
-        "<Plug>(YankyPutBeforeLinewise)",
-        desc = "Paste In Line Above",
-      },
-      {
-        "[y",
-        "<Plug>(YankyCycleForward)",
-        desc = "Cycle Forward Through Yank History",
-      },
-      {
-        "]y",
-        "<Plug>(YankyCycleBackward)",
-        desc = "Cycle Backward Through Yank History",
-      },
-      {
-        "y",
-        "<Plug>(YankyYank)",
-        mode = { "n", "x" },
-        desc = "Yanky Yank",
-      },
-    },
-    opts = {
-      ring = {
-        history_length = 20,
-      },
-      highlight = {
-        timer = 100,
-      },
-      preserve_cursor_position = {
-        -- NOTE: doesn't work with multicursor.nvim
-        enabled = false,
-      },
-    },
-  },
+  -- {
+  --   "gbprod/yanky.nvim",
+  --   keys = {
+  --     {
+  --       "p",
+  --       "<Plug>(YankyPutAfter)",
+  --       mode = { "n", "x" },
+  --       desc = "Paste After Cursor",
+  --     },
+  --     {
+  --       "P",
+  --       "<Plug>(YankyPutBefore)",
+  --       mode = { "n", "x" },
+  --       desc = "Paste Before Cursor",
+  --     },
+  --     {
+  --       "=p",
+  --       "<Plug>(YankyPutAfterLinewise)",
+  --       desc = "Paste In Line Below",
+  --     },
+  --     {
+  --       "=P",
+  --       "<Plug>(YankyPutBeforeLinewise)",
+  --       desc = "Paste In Line Above",
+  --     },
+  --     {
+  --       "[y",
+  --       "<Plug>(YankyCycleForward)",
+  --       desc = "Cycle Forward Through Yank History",
+  --     },
+  --     {
+  --       "]y",
+  --       "<Plug>(YankyCycleBackward)",
+  --       desc = "Cycle Backward Through Yank History",
+  --     },
+  --     {
+  --       "y",
+  --       "<Plug>(YankyYank)",
+  --       mode = { "n", "x" },
+  --       desc = "Yanky Yank",
+  --     },
+  --   },
+  --   opts = {
+  --     ring = {
+  --       history_length = 20,
+  --     },
+  --     highlight = {
+  --       timer = 100,
+  --     },
+  --     preserve_cursor_position = {
+  --       -- NOTE: doesn't work with multicursor.nvim
+  --       enabled = false,
+  --     },
+  --   },
+  -- },
 
   {
     "monkoose/matchparen.nvim",

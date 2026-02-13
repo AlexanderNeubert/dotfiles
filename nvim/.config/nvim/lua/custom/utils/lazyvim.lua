@@ -1,4 +1,5 @@
 local M = {}
+local constants = require "custom.constants"
 
 M.load = function()
   local lazyvim_path = vim.fn.stdpath "data" .. "/lazy/LazyVim"
@@ -48,6 +49,17 @@ end
 
 M.memoize = function(...)
   return require("lazyvim.util").memoize(...)
+end
+
+M.safe_memoize = function(fn)
+  if constants.first_install then
+    return fn
+  end
+  local ok, lazyvim_util = pcall(require, "lazyvim.util")
+  if ok and lazyvim_util.memoize then
+    return lazyvim_util.memoize(fn)
+  end
+  return fn
 end
 
 return M

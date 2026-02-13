@@ -254,93 +254,9 @@ return {
   },
 
   {
-    -- fork throw error if there are not windows
-    "wochap/nvim-window-picker",
-    name = "window-picker",
-    keys = {
-      -- focus windows
-      {
-        "<C-F4>",
-        window_picker_utils.window_pick,
-        "Focus Window",
-      },
-      {
-        -- HACK: F28 maps C-F4 in terminal linux
-        "<F28>",
-        window_picker_utils.window_pick,
-        "Focus Window",
-      },
-
-      -- swap windows
-      {
-        "<C-S-F4>",
-        window_picker_utils.window_swap,
-        "Swap With Window",
-      },
-      {
-        -- HACK: F40 maps C-S-F4 in terminal linux
-        "<F40>",
-        window_picker_utils.window_swap,
-        "Swap With Window",
-      },
-    },
-    opts = {
-      hint = "floating-big-letter",
-      selection_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-      picker_config = {
-        statusline_winbar_picker = {
-          use_winbar = "always",
-        },
-      },
-      filter_rules = {
-        bo = {
-          filetype = constants.window_picker_exclude_filetypes,
-          buftype = constants.window_picker_exclude_buftypes,
-        },
-      },
-    },
-  },
-
-  {
-    "stevearc/profile.nvim",
-    keys = {
-      {
-        "<leader>pt",
-        function()
-          local profile = require "profile"
-          if profile.is_recording() then
-            profile.stop()
-            vim.ui.input(
-              { prompt = "Save profile to:", completion = "file", default = "profile.json" },
-              function(filename)
-                if filename then
-                  profile.export(filename)
-                  vim.notify(string.format("Wrote %s", filename))
-                end
-              end
-            )
-          else
-            profile.start "*"
-          end
-        end,
-        desc = "Toggle (profile.nvim)",
-      },
-    },
-  },
-
-  {
     "folke/snacks.nvim",
     optional = true,
     keys = {
-      -- scratch
-      {
-        "<leader>.",
-        function()
-          Snacks.scratch()
-        end,
-        desc = "Toggle Scratch Buffer",
-      },
-
       -- termimal
       {
         "<A-i>",
@@ -409,15 +325,6 @@ return {
     },
     opts = {
       styles = {
-        scratch = {
-          wo = {
-            winhighlight = "",
-          },
-          width = constants.width_fullscreen,
-          height = constants.height_fullscreen,
-          zindex = constants.zindex_fullscreen,
-        },
-
         terminal = {
           width = constants.width_fullscreen,
           height = constants.height_fullscreen,
@@ -530,18 +437,6 @@ return {
     end,
   },
 
-  {
-    "folke/snacks.nvim",
-    optional = true,
-    opts = function(_, opts)
-      -- Toggle the profiler
-      Snacks.toggle.profiler():map "<leader>pp"
-
-      return vim.tbl_deep_extend("force", opts, {
-        profiler = {},
-      })
-    end,
-  },
   {
     "chrishrb/gx.nvim",
     submodules = false,

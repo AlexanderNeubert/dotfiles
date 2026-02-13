@@ -1,7 +1,7 @@
 local nvim_utils = require "custom.utils.nvim"
 local lazy_utils = require "custom.utils.lazy"
+local editor_utils = require "custom.utils.editor"
 local icons_constants = require "custom.constants.icons"
-local bufferline_utils = require "custom.utils-plugins.bufferline"
 local constants = require "custom.constants"
 
 return {
@@ -19,30 +19,22 @@ return {
         {
           mode = { "n", "v" },
           { "<leader>m", group = "misc" },
-          { "<leader>mp", group = "profile" },
-          { "<leader>mP", group = "syntax profile" },
           { "<leader><Tab>", group = "tab" },
           { "<leader>b", group = "buffer" },
           { "<leader>u", group = "ui" },
           { "<leader>f", group = "find/search/replace" },
           { "<leader>g", group = "git" },
-          { "<leader>p", group = "profiler" },
           { "<leader>q", group = "quit/session" },
         },
       },
       preset = "helix",
       layout = {
-        -- TOFIX: spacing also gets added in the first column
         spacing = 0,
       },
       win = {
         no_overlap = false,
         title = false,
         padding = { 0, 1 },
-        -- TODO: make it work
-        -- wo = {
-        --   winhighlight = "Normal:WhichKeyNormal,FloatBorder:WhichKeyBorder,FloatTitle:WhichKeyTitle,Search:None",
-        -- },
       },
       icons = {
         rules = {
@@ -58,10 +50,6 @@ return {
           { pattern = "harpoon", icon = "󱡀 ", color = "cyan" },
         },
       },
-      -- https://github.com/folke/which-key.nvim/issues/824
-      -- triggers = {
-      --   { "<auto>", mode = "nsot" },
-      -- },
     },
   },
 
@@ -103,9 +91,8 @@ return {
   },
 
   {
-    -- fork adds element.id in options.get_element_icon fn
-    "wochap/bufferline.nvim",
-    branch = "main",
+    "akinsho/bufferline.nvim",
+    version = "*",
     event = "VeryLazy",
     keys = {
       {
@@ -170,15 +157,6 @@ return {
         show_buffer_close_icons = false,
         show_close_icon = false,
         color_icons = true,
-        get_element_icon = function(element)
-          local icon, hl = require("nvim-web-devicons").get_icon(vim.fn.fnamemodify(element.path, ":t"), nil, {
-            default = true,
-          })
-          if vim.api.nvim_get_current_buf() == element.id then
-            return icon, hl
-          end
-          return icon, "DevIconDimmed"
-        end,
         separator_style = { "", "" },
         always_show_bufferline = true,
         hover = { enabled = false },
@@ -186,26 +164,12 @@ return {
       },
     },
     config = function(_, opts)
-      local bufferline = require "bufferline"
-      lazy_utils.on_load("catppuccin", function()
-        opts.highlights = bufferline_utils.get_highlights()
-        bufferline.setup(opts)
-
-        vim.api.nvim_create_autocmd("ColorScheme", {
-          pattern = "catppuccin*",
-          callback = function()
-            opts.highlights = bufferline_utils.get_highlights()
-            bufferline.setup(opts)
-            require("bufferline.highlights").reset_icon_hl_cache()
-          end,
-        })
-      end)
+      require("bufferline").setup(opts)
     end,
   },
 
   {
-    -- fork fixes position of signature/hover windows
-    "wochap/noice.nvim",
+    "folke/noice.nvim",
     event = { "LazyFile", "VeryLazy" },
     keys = {
       { "<leader>n", "", desc = "noice" },
@@ -400,6 +364,7 @@ return {
           size = {
             max_width = 90,
           },
+          scrollbar = false,
           border = {
             style = "rounded",
             padding = {
@@ -412,15 +377,6 @@ return {
           position = {
             row = 1,
             col = 1,
-          },
-          scrollbarOpts = {
-            showBar = false,
-            padding = {
-              top = 1,
-              bottom = 0,
-              right = 1,
-              left = 0,
-            },
           },
         },
         -- rice confirm popup
@@ -471,7 +427,7 @@ return {
     },
   },
   {
-    "wochap/noice.nvim",
+    "folke/noice.nvim",
     optional = true,
     opts = {
       -- disable noice lsp progress and messages
@@ -590,8 +546,7 @@ return {
   -- PERF: it causes nvim to freeze
   -- when scrolling to code with colors
   {
-    -- fork debounces hl colors, fixing the issue above
-    "wochap/nvim-highlight-colors",
+    "brenoprata10/nvim-highlight-colors",
     event = "VeryLazy",
     opts = {
       render = "virtual",
@@ -655,57 +610,81 @@ return {
   },
 
   {
-    "sphamba/smear-cursor.nvim",
-    enabled = false,
-    event = "VeryLazy",
-    opts = {
-      legacy_computing_symbols_support = true,
-      smear_between_neighbor_lines = false,
-      windows_zindex = constants.zindex_fullscreen,
-    },
-    config = function(_, opts)
-      local smear_cursor = require "smear_cursor"
-      lazy_utils.on_load("catppuccin", function()
-        local mocha = require("catppuccin.palettes").get_palette "mocha"
-        opts.cursor_color = mocha.green
-        smear_cursor.setup(opts)
-      end)
-    end,
-  },
-
-  {
-    "mvllow/modes.nvim",
-    lazy = false,
-    config = function(_, opts)
-      local modes = require "modes"
-      lazy_utils.on_load("catppuccin", function()
-        local C = require("catppuccin.palettes").get_palette()
-        opts.colors = {
-          copy = C.yellow,
-          delete = C.red,
-          format = C.peach,
-          insert = C.green,
-          replace = C.teal,
-          visual = C.mauve,
-        }
-        modes.setup(opts)
-      end)
-    end,
-  },
-
-  -- very cool plugin but adds flashing :c
-  {
     "rasulomaroff/reactive.nvim",
-    enabled = false,
     event = "VeryLazy",
-    opts = {},
-    config = function(_, opts)
+    config = function()
       local reactive = require "reactive"
-      lazy_utils.on_load("catppuccin", function()
-        local flavour = require("catppuccin").flavour
-        opts.load = { "catppuccin-" .. flavour .. "-cursor", "catppuccin-" .. flavour .. "-cursorline" }
-        reactive.setup(opts)
-      end)
+      local ok, C = pcall(require, "poimandres.palette")
+      if not ok then
+        return reactive.setup()
+      end
+
+      local function should_skip_common(bufnr)
+        local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+        local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
+        return vim.tbl_contains(constants.exclude_filetypes, filetype)
+          or vim.tbl_contains(constants.exclude_buftypes, buftype)
+          or editor_utils.is_bigfile(bufnr, constants.big_file_mb)
+      end
+
+      reactive.add_preset {
+        name = "poimandres-reactive",
+        skip = {
+          winhl = function()
+            local bufnr = vim.api.nvim_get_current_buf()
+            return constants.transparent_background or should_skip_common(bufnr)
+          end,
+          hl = function()
+            local bufnr = vim.api.nvim_get_current_buf()
+            return should_skip_common(bufnr)
+          end,
+        },
+        modes = {
+          n = {
+            winhl = {
+              CursorLine = { bg = C.background1 },
+            },
+            hl = {
+              Cursor = { fg = C.background2, bg = C.blue2 },
+            },
+          },
+          i = {
+            winhl = {
+              CursorLine = { bg = C.teal3 },
+            },
+            hl = {
+              Cursor = { fg = C.background2, bg = C.teal1 },
+            },
+          },
+          [{ "v", "V", "\x16" }] = {
+            winhl = {
+              CursorLine = { bg = C.blueGray3 },
+            },
+            hl = {
+              Cursor = { fg = C.background2, bg = C.yellow },
+            },
+          },
+          R = {
+            winhl = {
+              CursorLine = { bg = C.pink3 },
+            },
+            hl = {
+              Cursor = { fg = C.background2, bg = C.pink2 },
+            },
+          },
+        },
+        static = {
+          winhl = {
+            active = {
+              CursorLine = { bg = C.background1 },
+            },
+            inactive = {
+              CursorLine = { bg = C.background3 },
+            },
+          },
+        },
+      }
+      reactive.setup()
     end,
   },
 }

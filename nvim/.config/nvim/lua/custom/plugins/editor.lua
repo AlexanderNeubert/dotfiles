@@ -87,293 +87,293 @@ return {
 		},
 	},
 
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		version = "3.33",
-		event = "VeryLazy",
-		cmd = "Neotree",
-		opts_extend = { "event_handlers" },
-		keys = (in_leetcode and {}) or {
-			{
-				"<leader>E",
-				function()
-					editor_utils.close_right_sidebars "neo_tree_filesystem"
-					vim.schedule(function()
-						-- focus or open
-						require("neo-tree.command").execute {
-							dir = lazyvim_utils.root(),
-							reveal = true,
-						}
-					end)
-				end,
-				desc = "NeoTree (Root)", -- focus/toggle
-			},
-			{
-				"<leader>e",
-				function()
-					editor_utils.close_right_sidebars "neo_tree_filesystem"
-					vim.schedule(function()
-						-- focus or open
-						require("neo-tree.command").execute {
-							dir = vim.uv.cwd(),
-							reveal = true,
-						}
-					end)
-				end,
-				desc = "NeoTree (Cwd)", -- focus/toggle
-			},
-			{
-				"<leader>ge",
-				function()
-					editor_utils.close_right_sidebars "neo_tree_git"
-					vim.schedule(function()
-						-- focus or open
-						require("neo-tree.command").execute {
-							source = "git_status",
-							reveal = true,
-						}
-					end)
-				end,
-				desc = "Git Explorer",
-			},
-		},
-		init = function()
-			if vim.fn.argc(-1) == 1 then
-				local stat = vim.uv.fs_stat(vim.fn.argv(0))
-				if stat and stat.type == "directory" then
-					require "neo-tree"
-				end
-			end
-		end,
-		opts = {
-			sources = {
-				"filesystem",
-				"git_status",
-				"document_symbols",
-			},
-			auto_clean_after_session_restore = true,
-			close_if_last_window = true,
-			enable_diagnostics = false,
-			enable_opened_markers = false,
-			-- enable_cursor_hijack = true,
-			popup_border_style = "rounded",
-			use_popups_for_input = false,
-			use_default_mappings = false,
-			hide_root_node = true,
-			open_files_do_not_replace_types = constants.window_picker_exclude_filetypes,
-			event_handlers = {
-				{
-					event = "neo_tree_window_after_open",
-					handler = function(event)
-						vim.cmd ":wincmd ="
-						vim.opt.cursorcolumn = false
-						vim.opt.sidescrolloff = 0
-					end,
-				},
-				{
-					event = "neo_tree_window_after_close",
-					handler = function()
-						vim.cmd ":wincmd ="
-					end,
-				},
-			},
-			filesystem = {
-				hijack_netrw_behavior = "disabled",
-				bind_to_cwd = false,
-				-- scan_mode = "deep",
-				window = {
-					mappings = {
-						["<CR>"] = neo_tree_utils.open_with_window_picker,
-						["<C-v>"] = neo_tree_utils.vsplit_with_window_picker,
-						["<C-x>"] = neo_tree_utils.split_with_window_picker,
-						["."] = "toggle_hidden",
-						["f"] = "fuzzy_finder",
-						["<A-Up>"] = "navigate_up",
-						["-"] = "set_root",
-						["[g"] = "prev_git_modified",
-						["]g"] = "next_git_modified",
-						["i"] = "show_file_details",
-					},
-				},
-				follow_current_file = {
-					enabled = true,
-				},
-				use_libuv_file_watcher = true,
-				filtered_items = {
-					hide_dotfiles = false,
-					hide_gitignored = false,
-					hide_by_name = {
-						".git",
-						"node_modules",
-					},
-				},
-				commands = {
-					delete = function(state)
-						local utils = require "neo-tree.utils"
-						local inputs = require "neo-tree.ui.inputs"
-						local path = state.tree:get_node().path
-						local _, name = utils.split_path(path)
-						local msg = string.format("Are you sure you want to trash '%s'?", name)
-
-						inputs.confirm(msg, function(confirmed)
-							if not confirmed then
-								return
-							end
-
-							vim.fn.system { "trash-put", vim.fn.fnameescape(path) }
-							require("neo-tree.sources.manager").refresh(state.name)
-						end)
-					end,
-					delete_visual = function(state, selected_nodes)
-						local inputs = require "neo-tree.ui.inputs"
-						local msg = "Are you sure you want to trash " .. #selected_nodes .. " files ?"
-
-						inputs.confirm(msg, function(confirmed)
-							if not confirmed then
-								return
-							end
-
-							for _, node in ipairs(selected_nodes) do
-								vim.fn.system { "trash-put", vim.fn.fnameescape(node.path) }
-							end
-							require("neo-tree.sources.manager").refresh(state.name)
-						end)
-					end,
-				},
-			},
-			git_status = {
-				window = {
-					mappings = {
-						["<CR>"] = "open",
-						["<C-v>"] = "open_vsplit",
-						["<C-x>"] = "open_split",
-						["<leader>gS"] = "git_add_file",
-						["<leader>gU"] = "git_unstage_file",
-						["<leader>gR"] = "git_revert_file",
-					},
-				},
-			},
-			document_symbols = {
-				window = {
-					mappings = {
-						["<CR>"] = "jump_to_symbol",
-						["f"] = "filter",
-						["c"] = "noop",
-						["p"] = "noop",
-						["d"] = "noop",
-						["x"] = "noop",
-						["a"] = "noop",
-					},
-				},
-			},
-			window = {
-				width = 50,
-				position = "right",
-				mappings = {
-					["<BS>"] = "close_node",
-					["zC"] = "close_all_nodes",
-					["zO"] = "expand_all_nodes",
-					["<C-r>"] = "refresh",
-					["a"] = "add",
-					["d"] = "delete",
-					["r"] = "rename",
-					["c"] = "copy_to_clipboard",
-					["x"] = "cut_to_clipboard",
-					["p"] = "paste_from_clipboard",
-					["q"] = "close_window",
-					["?"] = "show_help",
-					["o"] = function(state)
-						require("lazy.util").open(state.tree:get_node().path, { system = true })
-					end,
-					["y"] = function(state)
-						local node = state.tree:get_node()
-						local filename = node.name
-						vim.fn.setreg("+", filename, "c")
-						vim.notify("Copied: " .. filename)
-					end,
-					["Y"] = function(state)
-						local node = state.tree:get_node()
-						local filepath = node:get_id()
-						local modify = vim.fn.fnamemodify
-						local relativepath = modify(filepath, ":.")
-						vim.fn.setreg("+", relativepath, "c")
-						vim.notify("Copied: " .. relativepath)
-					end,
-					["gy"] = function(state)
-						local node = state.tree:get_node()
-						local filepath = node:get_id()
-						vim.fn.setreg("+", filepath, "c")
-						vim.notify("Copied: " .. filepath)
-					end,
-				},
-			},
-			default_component_configs = {
-				container = {
-					width = "100%",
-					right_padding = 1,
-				},
-				indent = {
-					with_markers = false,
-					padding = 1,
-				},
-				icon = {
-					folder_empty = icons_constants.folder.empty,
-					folder_empty_open = icons_constants.folder.empty_open,
-				},
-				modified = {
-					symbol = "",
-				},
-				git_status = {
-					symbols = {
-						added = icons_constants.git.Add,
-						deleted = icons_constants.git.Delete,
-						modified = icons_constants.git.Change,
-						renamed = "󰁕",
-						untracked = "",
-						ignored = "",
-						unstaged = "󰄱",
-						staged = "",
-						conflict = "",
-					},
-					align = "right",
-				},
-			},
-		},
-		config = function(_, opts)
-			require("neo-tree").setup(opts)
-
-			vim.api.nvim_create_autocmd("TermClose", {
-				pattern = "*lazygit",
-				callback = function()
-					if package.loaded["neo-tree.sources.git_status"] then
-						require("neo-tree.sources.git_status").refresh()
-					end
-				end,
-			})
-		end,
-	},
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		optional = true,
-		opts = {
-			event_handlers = {
-				-- setup snacks.nvim rename
-				-- docs: https://github.com/folke/snacks.nvim/blob/main/docs/rename.md
-				{
-					event = "file_moved",
-					handler = function(data)
-						Snacks.rename.on_rename_file(data.source, data.destination)
-					end,
-				},
-				{
-					event = "file_renamed",
-					handler = function(data)
-						Snacks.rename.on_rename_file(data.source, data.destination)
-					end,
-				},
-			},
-		},
-	},
+	-- {
+	-- 	"nvim-neo-tree/neo-tree.nvim",
+	-- 	version = "3.33",
+	-- 	event = "VeryLazy",
+	-- 	cmd = "Neotree",
+	-- 	opts_extend = { "event_handlers" },
+	-- 	keys = (in_leetcode and {}) or {
+	-- 		{
+	-- 			"<leader>E",
+	-- 			function()
+	-- 				editor_utils.close_right_sidebars "neo_tree_filesystem"
+	-- 				vim.schedule(function()
+	-- 					-- focus or open
+	-- 					require("neo-tree.command").execute {
+	-- 						dir = lazyvim_utils.root(),
+	-- 						reveal = true,
+	-- 					}
+	-- 				end)
+	-- 			end,
+	-- 			desc = "NeoTree (Root)", -- focus/toggle
+	-- 		},
+	-- 		{
+	-- 			"<leader>e",
+	-- 			function()
+	-- 				editor_utils.close_right_sidebars "neo_tree_filesystem"
+	-- 				vim.schedule(function()
+	-- 					-- focus or open
+	-- 					require("neo-tree.command").execute {
+	-- 						dir = vim.uv.cwd(),
+	-- 						reveal = true,
+	-- 					}
+	-- 				end)
+	-- 			end,
+	-- 			desc = "NeoTree (Cwd)", -- focus/toggle
+	-- 		},
+	-- 		{
+	-- 			"<leader>ge",
+	-- 			function()
+	-- 				editor_utils.close_right_sidebars "neo_tree_git"
+	-- 				vim.schedule(function()
+	-- 					-- focus or open
+	-- 					require("neo-tree.command").execute {
+	-- 						source = "git_status",
+	-- 						reveal = true,
+	-- 					}
+	-- 				end)
+	-- 			end,
+	-- 			desc = "Git Explorer",
+	-- 		},
+	-- 	},
+	-- 	init = function()
+	-- 		if vim.fn.argc(-1) == 1 then
+	-- 			local stat = vim.uv.fs_stat(vim.fn.argv(0))
+	-- 			if stat and stat.type == "directory" then
+	-- 				require "neo-tree"
+	-- 			end
+	-- 		end
+	-- 	end,
+	-- 	opts = {
+	-- 		sources = {
+	-- 			"filesystem",
+	-- 			"git_status",
+	-- 			"document_symbols",
+	-- 		},
+	-- 		auto_clean_after_session_restore = true,
+	-- 		close_if_last_window = true,
+	-- 		enable_diagnostics = false,
+	-- 		enable_opened_markers = false,
+	-- 		-- enable_cursor_hijack = true,
+	-- 		popup_border_style = "rounded",
+	-- 		use_popups_for_input = false,
+	-- 		use_default_mappings = false,
+	-- 		hide_root_node = true,
+	-- 		open_files_do_not_replace_types = constants.window_picker_exclude_filetypes,
+	-- 		event_handlers = {
+	-- 			{
+	-- 				event = "neo_tree_window_after_open",
+	-- 				handler = function(event)
+	-- 					vim.cmd ":wincmd ="
+	-- 					vim.opt.cursorcolumn = false
+	-- 					vim.opt.sidescrolloff = 0
+	-- 				end,
+	-- 			},
+	-- 			{
+	-- 				event = "neo_tree_window_after_close",
+	-- 				handler = function()
+	-- 					vim.cmd ":wincmd ="
+	-- 				end,
+	-- 			},
+	-- 		},
+	-- 		filesystem = {
+	-- 			hijack_netrw_behavior = "disabled",
+	-- 			bind_to_cwd = false,
+	-- 			-- scan_mode = "deep",
+	-- 			window = {
+	-- 				mappings = {
+	-- 					["<CR>"] = neo_tree_utils.open_with_window_picker,
+	-- 					["<C-v>"] = neo_tree_utils.vsplit_with_window_picker,
+	-- 					["<C-x>"] = neo_tree_utils.split_with_window_picker,
+	-- 					["."] = "toggle_hidden",
+	-- 					["f"] = "fuzzy_finder",
+	-- 					["<A-Up>"] = "navigate_up",
+	-- 					["-"] = "set_root",
+	-- 					["[g"] = "prev_git_modified",
+	-- 					["]g"] = "next_git_modified",
+	-- 					["i"] = "show_file_details",
+	-- 				},
+	-- 			},
+	-- 			follow_current_file = {
+	-- 				enabled = true,
+	-- 			},
+	-- 			use_libuv_file_watcher = true,
+	-- 			filtered_items = {
+	-- 				hide_dotfiles = false,
+	-- 				hide_gitignored = false,
+	-- 				hide_by_name = {
+	-- 					".git",
+	-- 					"node_modules",
+	-- 				},
+	-- 			},
+	-- 			commands = {
+	-- 				delete = function(state)
+	-- 					local utils = require "neo-tree.utils"
+	-- 					local inputs = require "neo-tree.ui.inputs"
+	-- 					local path = state.tree:get_node().path
+	-- 					local _, name = utils.split_path(path)
+	-- 					local msg = string.format("Are you sure you want to trash '%s'?", name)
+	--
+	-- 					inputs.confirm(msg, function(confirmed)
+	-- 						if not confirmed then
+	-- 							return
+	-- 						end
+	--
+	-- 						vim.fn.system { "trash-put", vim.fn.fnameescape(path) }
+	-- 						require("neo-tree.sources.manager").refresh(state.name)
+	-- 					end)
+	-- 				end,
+	-- 				delete_visual = function(state, selected_nodes)
+	-- 					local inputs = require "neo-tree.ui.inputs"
+	-- 					local msg = "Are you sure you want to trash " .. #selected_nodes .. " files ?"
+	--
+	-- 					inputs.confirm(msg, function(confirmed)
+	-- 						if not confirmed then
+	-- 							return
+	-- 						end
+	--
+	-- 						for _, node in ipairs(selected_nodes) do
+	-- 							vim.fn.system { "trash-put", vim.fn.fnameescape(node.path) }
+	-- 						end
+	-- 						require("neo-tree.sources.manager").refresh(state.name)
+	-- 					end)
+	-- 				end,
+	-- 			},
+	-- 		},
+	-- 		git_status = {
+	-- 			window = {
+	-- 				mappings = {
+	-- 					["<CR>"] = "open",
+	-- 					["<C-v>"] = "open_vsplit",
+	-- 					["<C-x>"] = "open_split",
+	-- 					["<leader>gS"] = "git_add_file",
+	-- 					["<leader>gU"] = "git_unstage_file",
+	-- 					["<leader>gR"] = "git_revert_file",
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 		document_symbols = {
+	-- 			window = {
+	-- 				mappings = {
+	-- 					["<CR>"] = "jump_to_symbol",
+	-- 					["f"] = "filter",
+	-- 					["c"] = "noop",
+	-- 					["p"] = "noop",
+	-- 					["d"] = "noop",
+	-- 					["x"] = "noop",
+	-- 					["a"] = "noop",
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 		window = {
+	-- 			width = 50,
+	-- 			position = "right",
+	-- 			mappings = {
+	-- 				["<BS>"] = "close_node",
+	-- 				["zC"] = "close_all_nodes",
+	-- 				["zO"] = "expand_all_nodes",
+	-- 				["<C-r>"] = "refresh",
+	-- 				["a"] = "add",
+	-- 				["d"] = "delete",
+	-- 				["r"] = "rename",
+	-- 				["c"] = "copy_to_clipboard",
+	-- 				["x"] = "cut_to_clipboard",
+	-- 				["p"] = "paste_from_clipboard",
+	-- 				["q"] = "close_window",
+	-- 				["?"] = "show_help",
+	-- 				["o"] = function(state)
+	-- 					require("lazy.util").open(state.tree:get_node().path, { system = true })
+	-- 				end,
+	-- 				["y"] = function(state)
+	-- 					local node = state.tree:get_node()
+	-- 					local filename = node.name
+	-- 					vim.fn.setreg("+", filename, "c")
+	-- 					vim.notify("Copied: " .. filename)
+	-- 				end,
+	-- 				["Y"] = function(state)
+	-- 					local node = state.tree:get_node()
+	-- 					local filepath = node:get_id()
+	-- 					local modify = vim.fn.fnamemodify
+	-- 					local relativepath = modify(filepath, ":.")
+	-- 					vim.fn.setreg("+", relativepath, "c")
+	-- 					vim.notify("Copied: " .. relativepath)
+	-- 				end,
+	-- 				["gy"] = function(state)
+	-- 					local node = state.tree:get_node()
+	-- 					local filepath = node:get_id()
+	-- 					vim.fn.setreg("+", filepath, "c")
+	-- 					vim.notify("Copied: " .. filepath)
+	-- 				end,
+	-- 			},
+	-- 		},
+	-- 		default_component_configs = {
+	-- 			container = {
+	-- 				width = "100%",
+	-- 				right_padding = 1,
+	-- 			},
+	-- 			indent = {
+	-- 				with_markers = false,
+	-- 				padding = 1,
+	-- 			},
+	-- 			icon = {
+	-- 				folder_empty = icons_constants.folder.empty,
+	-- 				folder_empty_open = icons_constants.folder.empty_open,
+	-- 			},
+	-- 			modified = {
+	-- 				symbol = "",
+	-- 			},
+	-- 			git_status = {
+	-- 				symbols = {
+	-- 					added = icons_constants.git.Add,
+	-- 					deleted = icons_constants.git.Delete,
+	-- 					modified = icons_constants.git.Change,
+	-- 					renamed = "󰁕",
+	-- 					untracked = "",
+	-- 					ignored = "",
+	-- 					unstaged = "󰄱",
+	-- 					staged = "",
+	-- 					conflict = "",
+	-- 				},
+	-- 				align = "right",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		require("neo-tree").setup(opts)
+	--
+	-- 		vim.api.nvim_create_autocmd("TermClose", {
+	-- 			pattern = "*lazygit",
+	-- 			callback = function()
+	-- 				if package.loaded["neo-tree.sources.git_status"] then
+	-- 					require("neo-tree.sources.git_status").refresh()
+	-- 				end
+	-- 			end,
+	-- 		})
+	-- 	end,
+	-- },
+	-- {
+	-- 	"nvim-neo-tree/neo-tree.nvim",
+	-- 	optional = true,
+	-- 	opts = {
+	-- 		event_handlers = {
+	-- 			-- setup snacks.nvim rename
+	-- 			-- docs: https://github.com/folke/snacks.nvim/blob/main/docs/rename.md
+	-- 			{
+	-- 				event = "file_moved",
+	-- 				handler = function(data)
+	-- 					Snacks.rename.on_rename_file(data.source, data.destination)
+	-- 				end,
+	-- 			},
+	-- 			{
+	-- 				event = "file_renamed",
+	-- 				handler = function(data)
+	-- 					Snacks.rename.on_rename_file(data.source, data.destination)
+	-- 				end,
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 
 	{
 		"folke/trouble.nvim",
@@ -927,7 +927,7 @@ return {
 	{
 		"folke/snacks.nvim",
 		optional = true,
-		keys = (in_leetcode and {}) or {
+		keys = {
 			-- pick
 			{
 				"<leader>ff",
@@ -1453,60 +1453,6 @@ return {
 					},
 				},
 			},
-		},
-	},
-
-	{
-		-- fork fixes a bug where the plugin doesn't work
-		-- when the current working directory isn't the git root
-		"wochap/git-conflict.nvim",
-		version = "*",
-		event = { "LazyFile", "VeryLazy" },
-		cmd = "GitConflictListQf",
-		keys = {
-			{
-				"<leader>xg",
-				"<cmd>GitConflictListQf<cr>",
-				desc = "Git Conflicts (Project)",
-			},
-		},
-		opts = {
-			default_mappings = {
-				ours = "<leader>gco",
-				theirs = "<leader>gct",
-				none = "<leader>gc0",
-				both = "<leader>gcb",
-				next = "]c",
-				prev = "[c",
-			},
-			disable_diagnostics = true,
-			list_opener = function()
-				require("trouble").open { mode = "quickfix" }
-			end,
-		},
-		config = function(_, opts)
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "GitConflictDetected",
-				callback = function(event)
-					lsp_utils.toggle_inlay_hints(event.buf, false)
-				end,
-			})
-
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "GitConflictResolved",
-				callback = function(event)
-					lsp_utils.toggle_inlay_hints(event.buf, true)
-				end,
-			})
-
-			require("git-conflict").setup(opts)
-		end,
-	},
-	{
-		"folke/which-key.nvim",
-		optional = true,
-		opts = {
-			spec = { { "<leader>gc", group = "git conflict" } },
 		},
 	},
 

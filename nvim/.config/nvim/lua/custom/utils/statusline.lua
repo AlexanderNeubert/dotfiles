@@ -255,15 +255,6 @@ local function maximize_status_module()
   return vim.t.maximized and (hl_str "StMaximize" .. " zoom") or ""
 end
 
-local function snacks_profiler_module()
-  local has_snacks = package.loaded["snacks"]
-  if not has_snacks then
-    return ""
-  end
-  local status = require("snacks.profiler").status()
-  return status.cond() and (hl_str "StSnacksProfiler" .. " profile") or ""
-end
-
 local function diagnostics_module()
   if not rawget(vim, "lsp") then
     return ""
@@ -566,7 +557,6 @@ M.statusline = function()
     -- search_count_module(),
     -- harpoon_module(),
     macro_module(),
-    snacks_profiler_module(),
     maximize_status_module(),
     -- PERF: disable for improved speed start
     -- formatter_module(),

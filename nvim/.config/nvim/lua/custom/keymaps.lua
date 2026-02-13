@@ -147,8 +147,6 @@ map("n", "<leader>qq", "<cmd>qa <CR>", "Exit")
 map("n", "<leader>q!", "<cmd>qa! <CR>", "Exit!")
 map("n", "gV", "`[v`]", "Last Yanked/Changed")
 map({ "n", "i", "v", "s" }, "<C-e>", keymaps_utils.close_all_floating, "Close Floating Windows")
-map("n", "<leader>ps", "<cmd>syntime on<CR>", "Profile Syntax Start")
-map("n", "<leader>pS", "<cmd>syntime report<CR>", "Profile Syntax End")
 map("n", "<leader>mc", "<cmd>DiffClip<CR>", "DiffClip")
 map("v", "<leader>mc", ":'<,'>ToggleColorFormat<CR>", "Toggle Color Format")
 -- https://vim.fandom.com/wiki/Super_retab
