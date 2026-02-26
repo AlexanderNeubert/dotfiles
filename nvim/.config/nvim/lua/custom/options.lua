@@ -188,7 +188,7 @@ end
 vim.opt.synmaxcol = 500
 
 vim.opt.spell = false
-vim.opt.spelllang = { "en_us", "es" }
+vim.opt.spelllang = { "en_us" }
 
 -- docs: https://neovim.io/doc/user/options.html#'sessionoptions'
 vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "skiprtp", "folds" }

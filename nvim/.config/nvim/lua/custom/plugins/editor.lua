@@ -1460,6 +1460,13 @@ return {
 		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
 		opts = {
+			-- HACK: workaround for gitsigns bug where CRLF files show entire file as changed.
+			-- When both index and working copy have CRLF (i_crlf=true, w_crlf=true),
+			-- gitsigns strips CRLF from the blob but adds \r to buffer lines, causing a mismatch.
+			-- See: gitsigns git.lua:125 condition `not self.i_crlf and self.w_crlf`
+			diff_opts = {
+				ignore_whitespace_change_at_eol = true,
+			},
 			preview_config = {
 				border = "rounded",
 				row = 1,
@@ -1593,26 +1600,26 @@ return {
 		},
 		config = function(_, opts)
 			-- colors
-			lazy_utils.on_load("catppuccin", function()
-				local mocha = require("catppuccin.palettes").get_palette "mocha"
-				opts.colors = {
-					mocha.rosewater,
-					mocha.flamingo,
-					mocha.pink,
-					mocha.mauve,
-					mocha.red,
-					mocha.maroon,
-					mocha.peach,
-					mocha.yellow,
-					mocha.green,
-					mocha.teal,
-					mocha.sky,
-					mocha.sapphire,
-					mocha.blue,
-					mocha.lavender,
-				}
-				require("blame").setup(opts)
-			end)
+			-- lazy_utils.on_load("catppuccin", function()
+			-- 	local mocha = require("catppuccin.palettes").get_palette "mocha"
+			-- 	opts.colors = {
+			-- 		mocha.rosewater,
+			-- 		mocha.flamingo,
+			-- 		mocha.pink,
+			-- 		mocha.mauve,
+			-- 		mocha.red,
+			-- 		mocha.maroon,
+			-- 		mocha.peach,
+			-- 		mocha.yellow,
+			-- 		mocha.green,
+			-- 		mocha.teal,
+			-- 		mocha.sky,
+			-- 		mocha.sapphire,
+			-- 		mocha.blue,
+			-- 		mocha.lavender,
+			-- 	}
+			-- 	require("blame").setup(opts)
+			-- end)
 
 			vim.api.nvim_create_autocmd("User", {
 				pattern = "BlameViewOpened",

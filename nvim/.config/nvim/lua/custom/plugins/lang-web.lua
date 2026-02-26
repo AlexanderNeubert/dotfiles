@@ -156,9 +156,9 @@ return {
             showSuggestionsAsSnippets = true,
           },
         },
-        tsserver = {
-          enabled = false,
-        },
+        -- tsserver = {
+        --   enabled = false,
+        -- },
         ts_ls = {
           enabled = false,
         },
@@ -239,21 +239,19 @@ return {
                   entriesLimit = 20,
                 },
               },
-              tsserver = {
-                globalPlugins = {
-                  {
-                    name = "@vue/typescript-plugin",
-                    location = lsp_utils.get_pkg_path(
-                      "vue-language-server",
-                      "/node_modules/@vue/language-server",
-                      { warn = false }
-                    ),
-                    languages = { "vue" },
-                    configNamespace = "typescript",
-                    enableForWorkspaceTypeScriptVersions = true,
-                  },
-                },
-              },
+              -- tsserver = {
+              --   globalPlugins = {
+              --       name = "@vue/typescript-plugin",
+              --       location = lsp_utils.get_pkg_path(
+              --         "vue-language-server",
+              --         "/node_modules/@vue/language-server",
+              --         { warn = false }
+              --       ),
+              --       languages = { "vue" },
+              --       configNamespace = "typescript",
+              --       enableForWorkspaceTypeScriptVersions = true,
+              --   },
+              -- },
             },
             typescript = {
               format = {
@@ -274,9 +272,9 @@ return {
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },
               },
-              tsserver = {
-                maxTsServerMemory = 8192,
-              },
+              -- tsserver = {
+              --   maxTsServerMemory = 8192,
+              -- },
             },
           },
           flags = {
@@ -308,10 +306,10 @@ return {
         },
       },
       setup = {
-        tsserver = function()
-          -- disable tsserver
-          return true
-        end,
+        -- tsserver = function()
+        --   -- disable tsserver
+        --   return true
+        -- end,
         ts_ls = function()
           -- disable ts_ls
           return true

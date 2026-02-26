@@ -12,8 +12,17 @@ config.term = "xterm-256color"
 
 config.color_scheme = "Poimandres"
 
-config.font = wezterm.font("CaskaydiaMono Nerd Font")
-config.font_size = 12
+config.font = wezterm.font_with_fallback({
+	"GeistMono Nerd Font",
+	"JetBrainsMono Nerd Font",
+}, { weight = "Medium" })
+config.font_size = 13.0
+config.harfbuzz_features = { "calt=1", "clig=1", "liga=1" }
+config.freetype_load_target = "Light"
+config.freetype_render_target = "HorizontalLcd"
+config.freetype_interpreter_version = 40
+config.line_height = 1.0
+config.cell_width = 1.0
 config.window_background_opacity = 0.9
 config.macos_window_background_blur = 10
 config.window_decorations = "RESIZE"

@@ -156,29 +156,29 @@ ctrl-r = 'workspace R' # for Random
 # alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
 # alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 # alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
-ctrl-shift-1 = 'move-node-to-workspace 1'
-ctrl-shift-2 = 'move-node-to-workspace 2'
-ctrl-shift-3 = 'move-node-to-workspace 3'
-ctrl-shift-4 = 'move-node-to-workspace 4'
-ctrl-shift-5 = 'move-node-to-workspace 5'
-ctrl-shift-6 = 'move-node-to-workspace 6'
-ctrl-shift-7 = 'move-node-to-workspace 7'
-ctrl-shift-8 = 'move-node-to-workspace 8'
-ctrl-shift-9 = 'move-node-to-workspace 9'
-ctrl-shift-b = 'move-node-to-workspace B' # for Browser
-ctrl-shift-t = 'move-node-to-workspace T' # for Terminal
-ctrl-shift-e = 'move-node-to-workspace E' # for VSCode
-ctrl-shift-r = 'move-node-to-workspace R' # for Random
+ctrl-cmd-1 = 'move-node-to-workspace 1'
+ctrl-cmd-2 = 'move-node-to-workspace 2'
+ctrl-cmd-3 = 'move-node-to-workspace 3'
+ctrl-cmd-4 = 'move-node-to-workspace 4'
+ctrl-cmd-5 = 'move-node-to-workspace 5'
+ctrl-cmd-6 = 'move-node-to-workspace 6'
+ctrl-cmd-7 = 'move-node-to-workspace 7'
+ctrl-cmd-8 = 'move-node-to-workspace 8'
+ctrl-cmd-9 = 'move-node-to-workspace 9'
+ctrl-cmd-b = 'move-node-to-workspace B' # for Browser
+ctrl-cmd-t = 'move-node-to-workspace T' # for Terminal
+ctrl-cmd-e = 'move-node-to-workspace E' # for VSCode
+ctrl-cmd-r = 'move-node-to-workspace R' # for Random
 
-ctrl-shift-f = 'fullscreen'
+ctrl-cmd-f = 'fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 ctrl-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-ctrl-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+ctrl-cmd-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-ctrl-shift-semicolon = 'mode service'
+ctrl-cmd-semicolon = 'mode service'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -194,10 +194,10 @@ backspace = ['close-all-windows-but-current', 'mode main']
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 #s = ['layout sticky tiling', 'mode main']
 
-ctrl-shift-h = ['join-with left', 'mode main']
-ctrl-shift-j = ['join-with down', 'mode main']
-ctrl-shift-k = ['join-with up', 'mode main']
-ctrl-shift-l = ['join-with right', 'mode main']
+ctrl-cmd-h = ['join-with left', 'mode main']
+ctrl-cmd-j = ['join-with down', 'mode main']
+ctrl-cmd-k = ['join-with up', 'mode main']
+ctrl-cmd-l = ['join-with right', 'mode main']
 
 down = 'volume down'
 up = 'volume up'
@@ -205,6 +205,10 @@ shift-down = ['volume set 0', 'mode main']
 
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
+run = "move-node-to-workspace T"
+
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.kitty'
 run = "move-node-to-workspace T"
 
 [[on-window-detected]]
