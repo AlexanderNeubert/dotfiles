@@ -1,7 +1,6 @@
 local constants = require "custom.constants"
 local lazyvim_utils = require "custom.utils.lazyvim"
 local nvim_utils = require "custom.utils.nvim"
-local window_picker_utils = require "custom.utils-plugins.window-picker"
 local lsp_utils = require "custom.utils.lsp"
 local smart_splits_utils = require "custom.utils-plugins.smart-splits"
 

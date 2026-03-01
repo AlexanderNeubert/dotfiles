@@ -22,12 +22,6 @@ return {
   },
 
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    optional = true,
-    opts_extend = { "event_handlers" },
-  },
-
-  {
     "folke/which-key.nvim",
     optional = true,
     opts_extend = { "spec", "icons.rules" },

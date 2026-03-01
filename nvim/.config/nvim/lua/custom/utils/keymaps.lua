@@ -104,10 +104,6 @@ M.map = function(mode, lhs, rhs, desc, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-M.unmap = function(mode, lhs, opts)
-  vim.keymap.del(mode, lhs, opts)
-end
-
 M.run_expr = function(expr)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(expr, true, false, true), "n", true)
 end

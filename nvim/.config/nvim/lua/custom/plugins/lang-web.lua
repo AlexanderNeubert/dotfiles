@@ -135,33 +135,27 @@ return {
           },
         },
         cssmodules_ls = {},
-        emmet_language_server = {
-          filetypes = {
-            "css",
-            "eruby",
-            "html",
-            "xhtml",
-            "xml",
-            "htmldjango",
-            "javascriptreact",
-            "less",
-            "pug",
-            "sass",
-            "scss",
-            "svelte",
-            "typescriptreact",
-            "vue",
-          },
-          init_options = {
-            showSuggestionsAsSnippets = true,
-          },
-        },
-        -- tsserver = {
-        --   enabled = false,
+        -- emmet_language_server = {
+        --   filetypes = {
+        --     "css",
+        --     "eruby",
+        --     "html",
+        --     "xhtml",
+        --     "xml",
+        --     "htmldjango",
+        --     "javascriptreact",
+        --     "less",
+        --     "pug",
+        --     "sass",
+        --     "scss",
+        --     "svelte",
+        --     "typescriptreact",
+        --     "vue",
+        --   },
+        --   init_options = {
+        --     showSuggestionsAsSnippets = true,
+        --   },
         -- },
-        ts_ls = {
-          enabled = false,
-        },
         vtsls = {
           filetypes = {
             "javascript",
@@ -239,19 +233,6 @@ return {
                   entriesLimit = 20,
                 },
               },
-              -- tsserver = {
-              --   globalPlugins = {
-              --       name = "@vue/typescript-plugin",
-              --       location = lsp_utils.get_pkg_path(
-              --         "vue-language-server",
-              --         "/node_modules/@vue/language-server",
-              --         { warn = false }
-              --       ),
-              --       languages = { "vue" },
-              --       configNamespace = "typescript",
-              --       enableForWorkspaceTypeScriptVersions = true,
-              --   },
-              -- },
             },
             typescript = {
               format = {
@@ -272,9 +253,6 @@ return {
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },
               },
-              -- tsserver = {
-              --   maxTsServerMemory = 8192,
-              -- },
             },
           },
           flags = {
@@ -306,14 +284,6 @@ return {
         },
       },
       setup = {
-        -- tsserver = function()
-        --   -- disable tsserver
-        --   return true
-        -- end,
-        ts_ls = function()
-          -- disable ts_ls
-          return true
-        end,
         vtsls = function(_, opts)
           -- copy typescript settings to javascript
           opts.settings.javascript =
@@ -511,41 +481,41 @@ return {
     },
   },
 
-  {
-    "mattn/emmet-vim",
-    event = "VeryLazy",
-    cmd = "EmmetInstall",
-    init = function()
-      vim.g.user_emmet_install_global = 0
-      vim.g.user_emmet_leader_key = "<C-y>"
-      vim.g.user_emmet_mode = "i"
-
-      nvim_utils.autocmd("FileType", {
-        group = nvim_utils.augroup "install_emmet",
-        pattern = {
-          "css",
-          "eruby",
-          "html",
-          "xhtml",
-          "xml",
-          "htmldjango",
-          "javascript",
-          "javascriptreact",
-          "less",
-          "pug",
-          "sass",
-          "scss",
-          "svelte",
-          "typescript",
-          "typescriptreact",
-          "vue",
-        },
-        callback = function()
-          vim.cmd [[ EmmetInstall ]]
-        end,
-      })
-    end,
-  },
+  -- {
+  --   "mattn/emmet-vim",
+  --   event = "VeryLazy",
+  --   cmd = "EmmetInstall",
+  --   init = function()
+  --     vim.g.user_emmet_install_global = 0
+  --     vim.g.user_emmet_leader_key = "<C-y>"
+  --     vim.g.user_emmet_mode = "i"
+  --
+  --     nvim_utils.autocmd("FileType", {
+  --       group = nvim_utils.augroup "install_emmet",
+  --       pattern = {
+  --         "css",
+  --         "eruby",
+  --         "html",
+  --         "xhtml",
+  --         "xml",
+  --         "htmldjango",
+  --         "javascript",
+  --         "javascriptreact",
+  --         "less",
+  --         "pug",
+  --         "sass",
+  --         "scss",
+  --         "svelte",
+  --         "typescript",
+  --         "typescriptreact",
+  --         "vue",
+  --       },
+  --       callback = function()
+  --         vim.cmd [[ EmmetInstall ]]
+  --       end,
+  --     })
+  --   end,
+  -- },
 
   {
     "nvim-neotest/neotest",

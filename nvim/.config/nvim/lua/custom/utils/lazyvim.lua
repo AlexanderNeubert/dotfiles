@@ -47,10 +47,6 @@ M.setup_lazy_file = function(...)
   return require("lazyvim.util.plugin").lazy_file(...)
 end
 
-M.memoize = function(...)
-  return require("lazyvim.util").memoize(...)
-end
-
 M.safe_memoize = function(fn)
   if constants.first_install then
     return fn

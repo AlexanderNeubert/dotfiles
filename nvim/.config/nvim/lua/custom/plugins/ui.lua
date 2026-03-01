@@ -40,7 +40,6 @@ return {
         rules = {
           -- NOTE: available colors: `azure`, `blue`, `cyan`, `green`, `grey`, `orange`, `purple`, `red`, `yellow`
           { pattern = "paste", icon = " ", color = "azure" },
-          { pattern = "avante", icon = icons_constants.lsp_kind.Avante .. " ", color = "blue" },
           { pattern = "comment", icon = " ", color = "grey" },
           { pattern = "zk", icon = " ", color = "green" },
           { pattern = "lsp", icon = " ", color = "red" },

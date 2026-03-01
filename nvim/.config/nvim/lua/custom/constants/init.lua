@@ -24,8 +24,6 @@ M.text_filetypes = {
 }
 
 local common_exclude_filetypes = {
-  -- neo-tree.nvim
-  "neo-tree",
   -- diffview.nvim
   "DiffviewFileHistory",
   "DiffviewFiles",
@@ -48,10 +46,6 @@ local common_exclude_filetypes = {
   "noice",
   -- harpoon
   "harpoon",
-  -- avante.nvim
-  "Avante",
-  "AvanteInput",
-  "AvanteSelectedFiles",
   -- incline.nvim
   "incline",
   -- snacks
@@ -67,11 +61,6 @@ local common_exclude_filetypes = {
   "netrw",
   "tutor",
 }
-
-M.window_picker_exclude_filetypes = lang_utils.list_merge(common_exclude_filetypes, {
-  -- nvim-treesitter-context
-  "treesitter_context",
-})
 
 -- NOTE: you can't exclude empty filetypes
 M.exclude_filetypes = lang_utils.list_merge(common_exclude_filetypes, {
@@ -92,17 +81,7 @@ M.exclude_filetypes = lang_utils.list_merge(common_exclude_filetypes, {
   "vim",
 })
 
-M.window_picker_exclude_buftypes = {
-  "terminal",
-  "nofile",
-  "prompt",
-}
-
-M.exclude_buftypes = lang_utils.list_merge(M.window_picker_exclude_buftypes, {
-  "help",
-})
-
-M.in_foot = os.getenv "TERM" == "foot"
+M.exclude_buftypes = { "terminal", "nofile", "prompt", "help" }
 
 M.in_neovide = vim.g.neovide
 
@@ -112,9 +91,6 @@ M.in_zk = os.getenv "IN_ZK" == "true"
 M.has_file_arg = vim.fn.argc(-1) > 0
 
 M.transparent_background = os.getenv "TRANSPARENT" == "true" and true or false
-
--- TODO: makes more elements transparent
-M.blur_background = os.getenv "BLUR" == "true" and true or false
 
 -- HACK: this variable is used to prevent importing
 -- specs from lazyvim on the first install
@@ -128,9 +104,6 @@ M.big_file_mb = 0.5
 
 local nix_path = os.getenv "NIX_PATH"
 M.in_nix = nix_path ~= nil and nix_path ~= ""
-
--- disables some plugins for faster editing
-M.in_lite = os.getenv "LITE" == "true"
 
 -- disables more plugins for faster editing
 -- called from zvm_vi_edit_command_line

@@ -127,7 +127,6 @@ return {
       virtual_text = false,
       summary = {
         animated = false,
-        -- TODO: close avante if it is open
         open = "aboveleft vsplit | vertical resize 50",
       },
     },

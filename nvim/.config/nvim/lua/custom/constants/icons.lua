@@ -8,23 +8,23 @@ M.fold = {
 M.folder = {
   default = "",
   open = "",
-  empty = "",
-  empty_open = "",
-  symlink = "",
-  symlink_open = "",
+  -- empty = "",
+  -- empty_open = "",
+  -- symlink = "",
+  -- symlink_open = "",
 }
 
 M.file = {
   default = "󰈚",
-  symlink = "",
+  -- symlink = "",
 }
 
-M.git = {
-  Add = "",
-  Change = "",
-  Delete = "",
-  Conflict = "",
-}
+-- M.git = {
+--   Add = "",
+--   Change = "",
+--   Delete = "",
+--   Conflict = "",
+-- }
 
 M.diagnostic = {
   Error = "",
@@ -33,12 +33,12 @@ M.diagnostic = {
   Hint = "󰌶",
 }
 
-M.diagnostic_by_index = {
-  M.diagnostic.Error,
-  M.diagnostic.Warn,
-  M.diagnostic.Info,
-  M.diagnostic.Hint,
-}
+-- M.diagnostic_by_index = {
+--   M.diagnostic.Error,
+--   M.diagnostic.Warn,
+--   M.diagnostic.Info,
+--   M.diagnostic.Hint,
+-- }
 
 M.lsp_kind = {
   Array = "",
@@ -79,7 +79,6 @@ M.lsp_kind = {
   Key = "",
   Tag = "",
 
-  Avante = "󰯫",
   Codeium = "󰘦",
   Copilot = "",
   Dap = "",
@@ -91,7 +90,7 @@ M.lsp_kind = {
 }
 
 M.other = {
-  ellipsis = "…",
+  -- ellipsis = "…",
   color = "󱓻",
 }
 

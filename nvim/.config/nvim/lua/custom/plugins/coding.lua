@@ -5,7 +5,6 @@ local blink_cmp_utils = require "custom.utils-plugins.blink-cmp"
 local mini_utils = require "custom.utils-plugins.mini"
 local keymaps_utils = require "custom.utils.keymaps"
 local lang_utils = require "custom.utils.lang"
-local text_case_utils = require "custom.utils-plugins.text-case"
 
 return {
   {
@@ -194,11 +193,11 @@ return {
         "saghen/blink.compat",
         opts = {},
       },
-      {
-        "carbonid1/EmmetJSS",
-        opts = {},
-        config = function() end,
-      },
+      -- {
+      --   "carbonid1/EmmetJSS",
+      --   opts = {},
+      --   config = function() end,
+      -- },
       "L3MON4D3/LuaSnip",
       "dmitmel/cmp-cmdline-history",
     },

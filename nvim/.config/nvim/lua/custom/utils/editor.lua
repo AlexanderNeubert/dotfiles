@@ -51,32 +51,4 @@ M.is_minfile = function(bufnr)
     or (not lang_utils.matches_any_regex(filetype, ft_ignore_patterns) and has_long_line(bufnr))
 end
 
-M.close_right_sidebars = function(ignore_sidebar)
-  local has_neo_tree = package.loaded["neo-tree"]
-  if has_neo_tree and ignore_sidebar ~= "neo_tree_git" then
-    require("neo-tree.command").execute { action = "close", source = "git_status" }
-  end
-
-  if has_neo_tree and ignore_sidebar ~= "neo_tree_filesystem" then
-    require("neo-tree.command").execute { action = "close", source = "filesystem" }
-  end
-
-  -- local has_dap_view = package.loaded["dap-view"]
-  -- if has_dap_view and ignore_sidebar ~= "dap-view" then
-  --   require("dap-view").close()
-  -- end
-end
-
-M.close_left_sidebars = function(ignore_sidebar)
-  local has_avante = package.loaded["avante"]
-  if has_avante and ignore_sidebar ~= "avante" then
-    require("avante").close_sidebar()
-  end
-
-  local has_neotest = package.loaded["neotest"]
-  if has_neotest and ignore_sidebar ~= "neotest" then
-    require("neotest").summary.close()
-  end
-end
-
 return M
