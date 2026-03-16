@@ -179,15 +179,7 @@ return {
     "folke/snacks.nvim",
     optional = true,
     opts = {
-      explorer = {
-        replace_netrw = true,
-      },
       picker = {
-        sources = {
-          explorer = {
-            layout = { layout = { position = "right" } },
-          },
-        },
         actions = {
           trouble_open = function(...)
             require("trouble.sources.snacks").actions.trouble_open.action(...)
@@ -643,15 +635,6 @@ return {
     "folke/snacks.nvim",
     optional = true,
     keys = {
-      -- explorer
-      {
-        "<leader>e",
-        function()
-          Snacks.explorer()
-        end,
-        desc = "Explorer",
-      },
-      -- pick
       {
         "<leader>ff",
         function()
