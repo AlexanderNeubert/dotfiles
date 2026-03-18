@@ -25,16 +25,6 @@ return {
       },
     },
   },
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      spec = {
-        { "gs", group = "surround" },
-      },
-    },
-  },
-
   -- https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-align.md
   -- ga or gA
   {
@@ -86,92 +76,6 @@ return {
       },
     },
   },
-
-  -- -- Better text-objects
-  -- {
-  --   "nvim-mini/mini.ai",
-  --   event = { "LazyFile", "VeryLazy" },
-  --   opts = function()
-  --     local ai = require "mini.ai"
-  --     return {
-  --       n_lines = 500,
-  --       custom_textobjects = {
-  --         o = ai.gen_spec.treesitter { -- code block
-  --           a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-  --           i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-  --         },
-  --         f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" }, -- function
-  --         c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" }, -- class
-  --         t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
-  --         d = { "%f[%d]%d+" }, -- digits
-  --         e = { -- Word with case
-  --           { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
-  --           "^().*()$",
-  --         },
-  --         g = mini_utils.mini_ai_buffer, -- buffer
-  --         u = ai.gen_spec.function_call(), -- u for "Usage"
-  --         U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- without dot in function name
-  --       },
-  --     }
-  --   end,
-  --   config = function(_, opts)
-  --     require("mini.ai").setup(opts)
-  --     lazy_utils.on_load("which-key.nvim", function()
-  --       vim.schedule(function()
-  --         mini_utils.mini_ai_whichkey(opts)
-  --       end)
-  --     end)
-  --   end,
-  -- },
-
-  -- {
-  --   "johmsalas/text-case.nvim",
-  --   event = "VeryLazy",
-  --   keys = {
-  --     {
-  --       "gt.",
-  --       text_case_utils.openSelect,
-  --       mode = { "n", "v" },
-  --       desc = "Pick",
-  --     },
-  --   },
-  --   opts = {
-  --     prefix = "gt",
-  --     enabled_methods = {
-  --       "to_snake_case",
-  --       "to_dash_case",
-  --       "to_constant_case",
-  --       "to_camel_case",
-  --       "to_pascal_case",
-  --       "to_title_case",
-  --     },
-  --   },
-  --   config = function(_, opts)
-  --     require("textcase").setup(opts)
-  --
-  --     -- create alias for dash-case
-  --     local to_kebab_case = require("textcase.shared.utils").create_wrapped_method(
-  --       "to_dash_case",
-  --       require("textcase.conversions.stringcase").to_dash_case,
-  --       "to-kebab-case"
-  --     )
-  --     local to_title_case = require("textcase.plugin.api").to_title_case
-  --     require("textcase.plugin.plugin").register_keybindings(opts.prefix, to_kebab_case, {
-  --       prefix = opts.prefix,
-  --       quick_replace = "k",
-  --       operator = "ok",
-  --       lsp_rename = "K",
-  --     })
-  --
-  --     -- setup Title Case keymap
-  --     require("textcase.plugin.plugin").register_keybindings(opts.prefix, to_title_case, {
-  --       prefix = opts.prefix,
-  --       quick_replace = "t",
-  --       operator = "ot",
-  --       lsp_rename = "T",
-  --     })
-  --   end,
-  -- },
 
   -- Only keep Blink active
   {
@@ -320,16 +224,12 @@ return {
         },
       },
       sources = {
-        defaults = {
-          -- Dynamically picking providers by treesitter node/filetype
-          function()
-            if blink_cmp_utils.inside_comment_block() then
-              return { "buffer" }
-            end
-            return nil
-          end,
-        },
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = function()
+          if blink_cmp_utils.inside_comment_block() then
+            return { "buffer" }
+          end
+          return { "lsp", "path", "snippets", "buffer" }
+        end,
         providers = {
           lsp = {
             -- if lsp takes more than 500ms then make it async
@@ -584,82 +484,9 @@ return {
         end
       end
 
-      -- check for sources.defaults
-      if opts.sources.defaults then
-        local defaults = opts.sources.defaults
-        local originalDefault = opts.sources.default
-        opts.sources.default = function()
-          for _, func in ipairs(defaults) do
-            local result = func(originalDefault)
-            if result ~= nil then
-              return result
-            end
-          end
-          return originalDefault
-        end
-        -- Unset custom prop
-        opts.sources.defaults = nil
-      end
-
-      -- check for enableds
-      if opts.enableds then
-        local enableds = opts.enableds
-        local originalEnabled = opts.enabled
-        opts.enabled = function()
-          for _, func in ipairs(enableds) do
-            local result = func()
-            if result ~= nil then
-              return result
-            end
-          end
-          return originalEnabled()
-        end
-        -- Unset custom prop
-        opts.enableds = nil
-      end
-
       require("blink.cmp").setup(opts)
     end,
   },
-
-  -- uncomment to use native snippets
-  -- {
-  --   "saghen/blink.cmp",
-  --   optional = true,
-  --   opts = {
-  --     snippets = {
-  --       expand = function(snippet, _)
-  --         return LazyVim.cmp.expand(snippet)
-  --       end,
-  --     },
-  --     sources = {
-  --       providers = {
-  --         snippets = {
-  --           opts = {
-  --             search_paths = {
-  --               vim.fn.stdpath "config" .. "/snippets",
-  --               vim.fn.stdpath "data" .. "/lazy/EmmetJSS",
-  --             },
-  --             friendly_snippets = false,
-  --             get_filetype = function(ctx)
-  --               -- TODO: get filetype from cursor position
-  --               -- local filetypes = require("luasnip.extras.filetype_functions").from_pos_or_filetype()
-  --               -- if #filetypes > 0 then
-  --               --   return filetypes[1]
-  --               -- end
-  --               return vim.bo.filetype
-  --             end,
-  --           },
-  --         },
-  --       },
-  --     },
-  --     keymap = {
-  --       ["<C-k>"] = { "select_and_accept" },
-  --       ["<Tab>"] = { "snippet_forward", "fallback" },
-  --       ["<S-Tab>"] = { "snippet_backward" },
-  --     },
-  --   },
-  -- },
 
   {
     "L3MON4D3/LuaSnip",
@@ -723,10 +550,8 @@ return {
     config = function(_, opts)
       require("luasnip").setup(opts)
 
-      -- load snippets in nvim config folder
-      -- NOTE: when using sync `load`, entries are duplicated in blink.cmp
-      -- lazy_load doesn't work on nvim 0.11
-      -- require("luasnip.loaders.from_vscode").load {
+      -- Load snippets from the config folder.
+      -- `load()` duplicates entries in blink.cmp, so keep `lazy_load()`.
       require("luasnip.loaders.from_vscode").lazy_load {
         paths = vim.fn.stdpath "config" .. "/snippets",
       }
@@ -1047,73 +872,6 @@ return {
     },
     opts = {},
   },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      icons = {
-        rules = {
-          { pattern = "multicursor", icon = " ", color = "green" },
-        },
-      },
-    },
-  },
-
-  -- {
-  --   "gbprod/yanky.nvim",
-  --   keys = {
-  --     {
-  --       "p",
-  --       "<Plug>(YankyPutAfter)",
-  --       mode = { "n", "x" },
-  --       desc = "Paste After Cursor",
-  --     },
-  --     {
-  --       "P",
-  --       "<Plug>(YankyPutBefore)",
-  --       mode = { "n", "x" },
-  --       desc = "Paste Before Cursor",
-  --     },
-  --     {
-  --       "=p",
-  --       "<Plug>(YankyPutAfterLinewise)",
-  --       desc = "Paste In Line Below",
-  --     },
-  --     {
-  --       "=P",
-  --       "<Plug>(YankyPutBeforeLinewise)",
-  --       desc = "Paste In Line Above",
-  --     },
-  --     {
-  --       "[y",
-  --       "<Plug>(YankyCycleForward)",
-  --       desc = "Cycle Forward Through Yank History",
-  --     },
-  --     {
-  --       "]y",
-  --       "<Plug>(YankyCycleBackward)",
-  --       desc = "Cycle Backward Through Yank History",
-  --     },
-  --     {
-  --       "y",
-  --       "<Plug>(YankyYank)",
-  --       mode = { "n", "x" },
-  --       desc = "Yanky Yank",
-  --     },
-  --   },
-  --   opts = {
-  --     ring = {
-  --       history_length = 20,
-  --     },
-  --     highlight = {
-  --       timer = 100,
-  --     },
-  --     preserve_cursor_position = {
-  --       -- NOTE: doesn't work with multicursor.nvim
-  --       enabled = false,
-  --     },
-  --   },
-  -- },
-
   {
     "monkoose/matchparen.nvim",
     event = { "LazyFile", "VeryLazy" },

@@ -5,17 +5,6 @@ local lang_utils = require "custom.utils.lang"
 
 return {
   {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
-    opts = {
-      ensure_installed = {
-        "markdown",
-        "markdown_inline",
-      },
-    },
-  },
-
-  {
     "neovim/nvim-lspconfig",
     optional = true,
     opts = {
@@ -71,16 +60,6 @@ return {
   },
 
   {
-    "folke/snacks.nvim",
-    optional = true,
-    opts = {
-      indent = {
-        exclude_filetypes = { "markdown" },
-      },
-    },
-  },
-
-  {
     "MeanderingProgrammer/render-markdown.nvim",
     enabled = not constants.in_kittyscrollback,
     event = (constants.in_zk and { "LazyFile", "VeryLazy" }) or "VeryLazy",
@@ -126,33 +105,6 @@ return {
         buftype = {
           nofile = {
             enabled = false,
-          },
-        },
-      },
-    },
-  },
-  {
-    "saghen/blink.cmp",
-    optional = true,
-    opts = {
-      sources = {
-        defaults = {
-          function(default)
-            local filetype = vim.api.nvim_buf_get_option(0, "filetype")
-            local has_render_markdown = package.loaded["render-markdown"]
-            if has_render_markdown then
-              if filetype == "markdown" then
-                return lang_utils.list_merge(default, { "markdown" })
-              end
-            end
-            return nil
-          end,
-        },
-        providers = {
-          markdown = {
-            name = "RenderMarkdown",
-            module = "render-markdown.integ.blink",
-            kind = "RenderMarkdown",
           },
         },
       },

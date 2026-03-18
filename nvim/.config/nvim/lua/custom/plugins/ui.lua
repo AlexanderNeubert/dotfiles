@@ -13,7 +13,6 @@ return {
     init = function()
       vim.opt.timeout = true
     end,
-    opts_extend = { "spec", "icons.rules" },
     opts = {
       spec = {
         {
@@ -26,6 +25,9 @@ return {
           { "<leader>g", group = "git" },
           { "<leader>q", group = "quit/session" },
         },
+        { "gs", group = "surround" },
+        { "<leader>x", group = "trouble" },
+        { "<leader>R", group = "grug-far" },
       },
       preset = "helix",
       layout = {
@@ -47,6 +49,7 @@ return {
           { pattern = "trouble", icon = "󱖫 ", color = "yellow" },
           { pattern = "snip", icon = icons_constants.lsp_kind.Snippet .. " ", color = "orange" },
           { pattern = "harpoon", icon = "󱡀 ", color = "cyan" },
+          { pattern = "multicursor", icon = " ", color = "green" },
         },
       },
     },
@@ -121,10 +124,6 @@ return {
       },
     },
     init = function()
-      -- options already set in options.lua
-      -- vim.o.tabline = "%#Normal#"
-      -- vim.opt.termguicolors = true
-
       -- Fix bufferline when restoring a session
       nvim_utils.autocmd("BufAdd", {
         callback = function()
@@ -469,7 +468,7 @@ return {
         blank = {
           hl = "SnacksIndentBlank",
         },
-        exclude_filetypes = constants.exclude_filetypes,
+        exclude_filetypes = vim.list_extend(vim.deepcopy(constants.exclude_filetypes), { "markdown" }),
         filter = function(buf)
           local exclude_filetypes = lazy_utils.opts("snacks.nvim").indent.exclude_filetypes
           local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })

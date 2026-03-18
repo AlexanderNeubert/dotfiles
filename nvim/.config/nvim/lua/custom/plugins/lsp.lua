@@ -13,7 +13,6 @@ return {
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
     },
-    opts_extend = { "servers.*.keys" },
     keys = {
       {
         "<leader>l",
@@ -247,6 +246,88 @@ return {
             { "]e", lsp_utils.diagnostic_goto(true, "ERROR"), desc = "Next Diagnostic (Error)" },
           },
         },
+        gopls = {
+          keys = {
+            {
+              "<leader>td",
+              false,
+            },
+            -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
+            {
+              "<leader>dt",
+              "<cmd>lua require('dap-go').debug_test()<CR>",
+              desc = "Debug Nearest (Go)",
+            },
+          },
+        },
+        ruff = {
+          keys = {
+            {
+              "<leader>co",
+              false,
+            },
+            {
+              "<leader>lo",
+              lsp_utils.code_action "source.organizeImports",
+              desc = "Organize Imports",
+            },
+          },
+        },
+        vtsls = {
+          keys = {
+            {
+              "go",
+              function()
+                local win = vim.api.nvim_get_current_win()
+                local params = vim.lsp.util.make_position_params(win, "utf-16")
+                lsp_utils.execute {
+                  command = "typescript.goToSourceDefinition",
+                  arguments = { params.textDocument.uri, params.position },
+                  open = true,
+                }
+              end,
+              desc = "Goto Source Definition",
+            },
+            {
+              "gR",
+              function()
+                lsp_utils.execute {
+                  command = "typescript.findAllFileReferences",
+                  arguments = { vim.uri_from_bufnr(0) },
+                  open = true,
+                }
+              end,
+              desc = "File References",
+            },
+            {
+              "<leader>lo",
+              lsp_utils.code_action "source.organizeImports",
+              desc = "Organize Imports",
+            },
+            {
+              "<leader>lm",
+              lsp_utils.code_action "source.addMissingImports.ts",
+              desc = "Add Missing Imports",
+            },
+            {
+              "<leader>lu",
+              lsp_utils.code_action "source.removeUnused.ts",
+              desc = "Remove Unused Imports",
+            },
+            {
+              "<leader>lD",
+              lsp_utils.code_action "source.fixAll.ts",
+              desc = "Fix All Diagnostics",
+            },
+            {
+              "<leader>lT",
+              function()
+                lsp_utils.execute { command = "typescript.selectTypeScriptVersion" }
+              end,
+              desc = "Select TS Workspace Version",
+            },
+          },
+        },
       },
       setup = {},
     },
@@ -363,10 +444,11 @@ return {
       },
     },
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
-    opts_extend = { "ensure_installed" },
     opts = {
-      -- NOTE: mason.nvim doesn't have the option `ensure_installed`
-      ensure_installed = {},
+      registries = {
+        "github:mason-org/mason-registry",
+        "github:Crashdummyy/mason-registry",
+      },
       ui = {
         width = constants.width_fullscreen,
         height = constants.height_fullscreen,
@@ -392,15 +474,6 @@ return {
             buf = vim.api.nvim_get_current_buf(),
           }
         end, 100)
-      end)
-
-      mr.refresh(function()
-        for _, tool in ipairs(opts.ensure_installed) do
-          local p = mr.get_package(tool)
-          if not p:is_installed() then
-            p:install()
-          end
-        end
       end)
     end,
   },

@@ -30,7 +30,6 @@ return {
 
       {
         "igorlfs/nvim-dap-view",
-        lazy = false,
         keys = {
           {
             "<leader>duo",
@@ -97,11 +96,9 @@ return {
           local dap, dap_view = require "dap", require "dap-view"
           dap.listeners.before.attach["dap-view-config"] = function()
             dap_view.open()
-            -- vim.cmd "wincmd ="
           end
           dap.listeners.before.launch["dap-view-config"] = function()
             dap_view.open()
-            -- vim.cmd "wincmd ="
           end
           dap.listeners.before.event_terminated["dap-view-config"] = function()
             dap_view.close()
@@ -160,7 +157,6 @@ return {
         config = function() end,
       },
 
-      "rcarriga/cmp-dap",
     },
     keys = {
       {
@@ -270,49 +266,5 @@ return {
         numhl = "",
       })
     end,
-  },
-
-  {
-    "saghen/blink.cmp",
-    optional = true,
-    opts = {
-      enableds = {
-        function()
-          local has_cmp_dap = package.loaded["cmp_dap"]
-          if has_cmp_dap then
-            local cmp_dap = require "cmp_dap"
-            -- enable if in dap buffer
-            if cmp_dap.is_dap_buffer() then
-              return true
-            end
-          end
-          return nil
-        end,
-      },
-      sources = {
-        defaults = {
-          function()
-            local has_cmp_dap = package.loaded["cmp_dap"]
-            if has_cmp_dap then
-              local cmp_dap = require "cmp_dap"
-              -- enable if in dap buffer
-              if cmp_dap.is_dap_buffer() then
-                return { "dap", "buffer" }
-              end
-            end
-            return nil
-          end,
-        },
-        providers = {
-          -- the following command tells if current dap session supports completion
-          -- :lua= require("dap").session().capabilities.supportsCompletionsRequest
-          dap = {
-            name = "dap",
-            module = "blink.compat.source",
-            kind = "Dap",
-          },
-        },
-      },
-    },
   },
 }

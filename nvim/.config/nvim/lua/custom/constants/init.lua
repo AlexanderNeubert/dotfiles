@@ -72,8 +72,6 @@ M.exclude_filetypes = lang_utils.list_merge(common_exclude_filetypes, {
   "grug-far",
   "grug-far-history",
   "grug-far-help",
-  -- nvim-spectre
-  "spectre_panel",
   -- checkhealth
   "checkhealth",
   -- nvim
@@ -87,6 +85,8 @@ M.in_neovide = vim.g.neovide
 
 M.in_zk = os.getenv "IN_ZK" == "true"
 
+M.in_kittyscrollback = os.getenv "KITTY_SCROLLBACK_NVIM" == "true"
+
 -- nvim is opening a file from the cmdline
 M.has_file_arg = vim.fn.argc(-1) > 0
 
@@ -96,9 +96,6 @@ M.transparent_background = os.getenv "TRANSPARENT" == "true" and true or false
 -- specs from lazyvim on the first install
 -- otherwise, we end up with a bunch of errors
 M.first_install = false
-
-local es_spell_path = vim.fn.stdpath "data" .. "/site/spell/es.utf-8.spl"
-M.disable_netrw = vim.uv.fs_stat(es_spell_path) and true or false
 
 M.big_file_mb = 0.5
 

@@ -1,6 +1,5 @@
 local constants = require "custom.constants"
 local lazyvim_utils = require "custom.utils.lazyvim"
-local nvim_utils = require "custom.utils.nvim"
 local format_utils = require "custom.utils.format"
 local lsp_utils = require "custom.utils.lsp"
 
@@ -76,24 +75,6 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     optional = true,
-    opts = {
-      ensure_installed = {
-        "css",
-        "graphql",
-        "html",
-        "javascript",
-        "jsdoc",
-        "json",
-        "scss",
-        "tsx",
-        "typescript",
-        "xml",
-      },
-    },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
     opts = function()
       vim.filetype.add {
         extension = {
@@ -112,15 +93,6 @@ return {
         cssls = {
           init_options = {
             provideFormatter = false,
-          },
-          capabilities = {
-            textDocument = {
-              completion = {
-                completionItem = {
-                  snippetSupport = true,
-                },
-              },
-            },
           },
           settings = {
             css = {
@@ -165,59 +137,6 @@ return {
             "typescriptreact",
             "typescript.tsx",
             "vue",
-          },
-          keys = {
-            {
-              "go",
-              function()
-                local win = vim.api.nvim_get_current_win()
-                local params = vim.lsp.util.make_position_params(win, "utf-16")
-                lsp_utils.execute {
-                  command = "typescript.goToSourceDefinition",
-                  arguments = { params.textDocument.uri, params.position },
-                  open = true,
-                }
-              end,
-              desc = "Goto Source Definition",
-            },
-            {
-              "gR",
-              function()
-                lsp_utils.execute {
-                  command = "typescript.findAllFileReferences",
-                  arguments = { vim.uri_from_bufnr(0) },
-                  open = true,
-                }
-              end,
-              desc = "File References",
-            },
-            {
-              "<leader>lo",
-              lsp_utils.code_action "source.organizeImports",
-              desc = "Organize Imports",
-            },
-            {
-              "<leader>lm",
-              lsp_utils.code_action "source.addMissingImports.ts",
-              desc = "Add Missing Imports",
-            },
-            {
-              "<leader>lu",
-              lsp_utils.code_action "source.removeUnused.ts",
-              desc = "Remove Unused Imports",
-            },
-            {
-              "<leader>lD",
-              lsp_utils.code_action "source.fixAll.ts",
-              desc = "Fix All Diagnostics",
-            },
-            {
-              "<leader>lT",
-              function()
-                lsp_utils.execute { command = "typescript.selectTypeScriptVersion" }
-              end,
-              desc = "Select TS Workspace Version",
-            },
           },
           settings = {
             complete_function_calls = true,
@@ -311,15 +230,6 @@ return {
   {
     "stevearc/conform.nvim",
     optional = true,
-    dependencies = {
-      {
-        "mason-org/mason.nvim",
-        optional = true,
-        opts = {
-          ensure_installed = { "prettierd", "xmlformatter" },
-        },
-      },
-    },
     opts = {
       -- https://biomejs.dev/internals/language-support/
       formatters_by_ft = {
@@ -481,42 +391,6 @@ return {
     },
   },
 
-  -- {
-  --   "mattn/emmet-vim",
-  --   event = "VeryLazy",
-  --   cmd = "EmmetInstall",
-  --   init = function()
-  --     vim.g.user_emmet_install_global = 0
-  --     vim.g.user_emmet_leader_key = "<C-y>"
-  --     vim.g.user_emmet_mode = "i"
-  --
-  --     nvim_utils.autocmd("FileType", {
-  --       group = nvim_utils.augroup "install_emmet",
-  --       pattern = {
-  --         "css",
-  --         "eruby",
-  --         "html",
-  --         "xhtml",
-  --         "xml",
-  --         "htmldjango",
-  --         "javascript",
-  --         "javascriptreact",
-  --         "less",
-  --         "pug",
-  --         "sass",
-  --         "scss",
-  --         "svelte",
-  --         "typescript",
-  --         "typescriptreact",
-  --         "vue",
-  --       },
-  --       callback = function()
-  --         vim.cmd [[ EmmetInstall ]]
-  --       end,
-  --     })
-  --   end,
-  -- },
-
   {
     "nvim-neotest/neotest",
     optional = true,
@@ -530,24 +404,9 @@ return {
         adapters = {
           ["neotest-playwright"] = {
             options = {
-              -- persist_project_selection = true,
               enable_dynamic_test_discovery = true,
             },
           },
-          -- ["neotest-jest"] = {
-          --   jestConfigFile = function(file)
-          --     -- TODO: monorepo setup?
-          --     local cwd = vim.fn.getcwd()
-          --     if vim.uv.fs_stat(cwd .. "/jest.config.ts") then
-          --       return cwd .. "/jest.config.ts"
-          --     end
-          --     return cwd .. "/jest.config.js"
-          --   end,
-          --   cwd = function(path)
-          --     -- TODO: monorepo setup?
-          --     return vim.fn.getcwd()
-          --   end,
-          -- },
           ["neotest-vitest"] = {},
         },
       })

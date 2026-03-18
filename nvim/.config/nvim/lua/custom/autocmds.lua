@@ -58,7 +58,6 @@ nvim_utils.autocmd("FileType", {
     "gitrebase",
     "gitconfig",
     "PlenaryTestPopup",
-    "spectre_panel",
     -- neotest
     "neotest-output",
     "neotest-summary",
@@ -138,9 +137,6 @@ nvim_utils.autocmd({ "FileType" }, {
   group = nvim_utils.augroup "bigfile",
   pattern = "bigfile",
   callback = function(ev)
-    -- TODO: does "monkoose/matchparen.nvim" supports disabling it?
-    -- vim.cmd [[NoMatchParen]]
-    -- vim.cmd [[MatchParenDisable]]
     vim.schedule(function()
       vim.bo[ev.buf].syntax = vim.filetype.match { buf = ev.buf } or ""
       vim.opt_local.breakindent = false

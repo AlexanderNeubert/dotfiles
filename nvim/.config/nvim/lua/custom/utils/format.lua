@@ -80,14 +80,6 @@ M.info = function(...)
 end
 
 M.setup = function()
-  -- NOTE: uncomment if you want Autoformat
-  -- vim.api.nvim_create_autocmd("BufWritePre", {
-  --   group = vim.api.nvim_create_augroup("LazyFormat", {}),
-  --   callback = function(event)
-  --     M.format({ buf = event.buf })
-  --   end,
-  -- })
-
   -- Manual format
   vim.api.nvim_create_user_command("LazyFormat", function(args)
     local range = nil

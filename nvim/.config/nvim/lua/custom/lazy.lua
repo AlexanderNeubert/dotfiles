@@ -90,12 +90,12 @@ require("lazy").setup {
         "vimballPlugin",
         "zip",
         "zipPlugin",
-      }, constants.disable_netrw and {
         "netrw",
         "netrwFileHandlers",
         "netrwPlugin",
         "netrwSettings",
-      } or {}),
+      }, {
+      }),
     },
   },
 }

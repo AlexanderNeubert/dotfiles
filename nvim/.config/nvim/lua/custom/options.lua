@@ -119,7 +119,6 @@ vim.opt.inccommand = "nosplit"
 -- NOTE: cursorcolumn causes glitches
 -- PERF: cursorcolumn causes performance issues with long lines
 vim.opt.cursorline = true
--- vim.opt.cursorcolumn = not constants.transparent_background
 
 -- Minimal number of screen lines to keep above, below, left and right before the cursor.
 vim.opt.scrolloff = 4
@@ -150,8 +149,6 @@ vim.opt.shortmess:append "WcC"
 
 -- enable 24-bit colour
 vim.opt.termguicolors = true
-
-vim.opt.compatible = false
 
 -- max items in autocomplete menu
 vim.opt.pumheight = 15

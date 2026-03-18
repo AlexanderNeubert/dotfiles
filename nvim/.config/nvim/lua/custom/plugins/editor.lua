@@ -211,14 +211,6 @@ return {
     },
   },
   {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      spec = { { "<leader>x", group = "trouble" } },
-    },
-  },
-
-  {
     "folke/todo-comments.nvim",
     cmd = { "TodoTrouble" },
     event = "VeryLazy",
@@ -533,31 +525,6 @@ return {
   },
 
   {
-    "nvim-pack/nvim-spectre",
-    keys = {
-      {
-        "<leader>fs",
-        "<cmd>lua require('spectre').open()<CR>",
-        desc = "Search And Replace (Spectre)",
-      },
-    },
-    opts = {
-      highlight = {
-        ui = "String",
-        search = "SpectreSearch",
-        replace = "DiffAdd",
-      },
-      mapping = {
-        ["send_to_qf"] = {
-          map = "<C-q>",
-          cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
-          desc = "send all item to quickfix",
-        },
-      },
-    },
-  },
-
-  {
     "MagicDuck/grug-far.nvim",
     cmd = { "GrugFar", "GrugFarWithin" },
     keys = {
@@ -623,14 +590,6 @@ return {
       },
     },
   },
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      spec = { { "<leader>R", group = "grug-far" } },
-    },
-  },
-
   {
     "folke/snacks.nvim",
     optional = true,
@@ -1267,28 +1226,6 @@ return {
       },
     },
     config = function(_, opts)
-      -- colors
-      -- lazy_utils.on_load("catppuccin", function()
-      -- 	local mocha = require("catppuccin.palettes").get_palette "mocha"
-      -- 	opts.colors = {
-      -- 		mocha.rosewater,
-      -- 		mocha.flamingo,
-      -- 		mocha.pink,
-      -- 		mocha.mauve,
-      -- 		mocha.red,
-      -- 		mocha.maroon,
-      -- 		mocha.peach,
-      -- 		mocha.yellow,
-      -- 		mocha.green,
-      -- 		mocha.teal,
-      -- 		mocha.sky,
-      -- 		mocha.sapphire,
-      -- 		mocha.blue,
-      -- 		mocha.lavender,
-      -- 	}
-      -- 	require("blame").setup(opts)
-      -- end)
-
       vim.api.nvim_create_autocmd("User", {
         pattern = "BlameViewOpened",
         callback = function(event)

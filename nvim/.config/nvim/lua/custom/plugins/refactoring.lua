@@ -37,7 +37,7 @@ return {
         expr = true,
       },
       {
-        "<leader>rf",
+        "<leader>rB",
         function()
           return require("refactoring").refactor "Extract Block To File"
         end,
@@ -58,7 +58,7 @@ return {
         function()
           require("refactoring").debug.print_var { normal = true }
         end,
-        mode = { "n", "x" },
+        mode = "n",
         desc = "Debug Print Variable",
       },
       {
@@ -101,7 +101,7 @@ return {
         function()
           require("refactoring").debug.print_var {}
         end,
-        mode = { "n", "x" },
+        mode = "x",
         desc = "Debug Print Variable",
       },
     },

@@ -1,6 +1,4 @@
 local constants = require "custom.constants"
-local lsp_utils = require "custom.utils.lsp"
-
 -- source: https://github.com/serranomorante/.dotfiles/blob/main/docs/python-dev-setup.md
 local venv_path = table.concat({
   "import sys",
@@ -16,30 +14,11 @@ return {
   },
 
   {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
-    opts = {
-      ensure_installed = { "python" },
-    },
-  },
-
-  {
     "neovim/nvim-lspconfig",
     optional = true,
     opts = {
       servers = {
         ruff = {
-          keys = {
-            {
-              "<leader>co",
-              false,
-            },
-            {
-              "<leader>lo",
-              lsp_utils.code_action "source.organizeImports",
-              desc = "Organize Imports",
-            },
-          },
         },
       },
     },
@@ -53,15 +32,6 @@ return {
 
   {
     "mfussenegger/nvim-lint",
-    dependencies = {
-      {
-        "mason-org/mason.nvim",
-        optional = true,
-        opts = {
-          ensure_installed = { "pylint" },
-        },
-      },
-    },
     opts = {
       linters_by_ft = {
         python = { "pylint" },

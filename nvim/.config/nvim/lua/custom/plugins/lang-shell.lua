@@ -4,13 +4,6 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     optional = true,
-    opts = {
-      ensure_installed = { "bash", "just" },
-    },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
     opts = function()
       nvim_utils.autocmd("BufEnter", {
         group = nvim_utils.augroup "disable_diagnostics_in_env_files",
@@ -43,15 +36,6 @@ return {
   {
     "stevearc/conform.nvim",
     optional = true,
-    dependencies = {
-      {
-        "mason-org/mason.nvim",
-        optional = true,
-        opts = {
-          ensure_installed = { "shfmt" },
-        },
-      },
-    },
     opts = {
       formatters_by_ft = {
         sh = { "shfmt" },
@@ -63,15 +47,6 @@ return {
   {
     "mfussenegger/nvim-lint",
     optional = true,
-    dependencies = {
-      {
-        "mason-org/mason.nvim",
-        optional = true,
-        opts = {
-          ensure_installed = { "shellcheck" },
-        },
-      },
-    },
     opts = {
       linters_by_ft = {
         sh = { "shellcheck" },

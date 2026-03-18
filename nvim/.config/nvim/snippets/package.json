@@ -38,13 +38,6 @@
       },
       {
         "language": [
-          "typescript",
-          "typescriptreact"
-        ],
-        "path": "./javascript/typescript.json"
-      },
-      {
-        "language": [
           "vue"
         ],
         "path": "./javascript/vue.json"
