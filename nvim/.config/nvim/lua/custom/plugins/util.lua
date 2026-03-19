@@ -261,10 +261,6 @@ return {
         "<leader>ft",
         function()
           local PATH = vim.env.PATH
-          if constants.in_nix then
-            -- undo overwrite of PATH in lua/custom/globals.lua
-            PATH = PATH:gsub("/run/current%-system/sw/bin/:", "", 1)
-          end
           Snacks.terminal.toggle("PATH=" .. PATH .. " zsh", {
             win = {
               border = "rounded",

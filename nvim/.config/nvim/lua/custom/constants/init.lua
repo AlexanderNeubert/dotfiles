@@ -99,9 +99,6 @@ M.first_install = false
 
 M.big_file_mb = 0.5
 
-local nix_path = os.getenv "NIX_PATH"
-M.in_nix = nix_path ~= nil and nix_path ~= ""
-
 -- disables more plugins for faster editing
 -- called from zvm_vi_edit_command_line
 M.in_vi_edit = os.getenv "IN_VI_EDIT" == "true"
