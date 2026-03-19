@@ -2,7 +2,26 @@ local constants = require "custom.constants"
 local lazyvim_utils = require "custom.utils.lazyvim"
 local nvim_utils = require "custom.utils.nvim"
 local lsp_utils = require "custom.utils.lsp"
-local smart_splits_utils = require "custom.utils-plugins.smart-splits"
+
+local function get_tmux_socket_path()
+  local tmux = vim.env.TMUX
+  if not tmux or #tmux == 0 then
+    return nil
+  end
+
+  return vim.split(tmux, ",", { trimempty = true })[1]
+end
+
+---@param args (string|number)[]
+local function tmux_exec(args)
+  local socket = get_tmux_socket_path()
+  if not socket then
+    return nil
+  end
+
+  local cmd = vim.list_extend({ "tmux", "-S", socket }, args, 1, #args)
+  return vim.fn.system(cmd)
+end
 
 return {
   {
@@ -243,10 +262,10 @@ return {
         group = nvim_utils.augroup "fix_on_init_smart_splits_nvim",
         callback = function()
           local pane_id = os.getenv "TMUX_PANE"
-          if tonumber(smart_splits_utils.tmux_exec { "show-options", "-pqvt", pane_id, "@pane-is-vim" }) == 1 then
+          if tonumber(tmux_exec { "show-options", "-pqvt", pane_id, "@pane-is-vim" }) == 1 then
             return
           end
-          smart_splits_utils.tmux_exec { "set-option", "-pt", pane_id, "@pane-is-vim", 1 }
+          tmux_exec { "set-option", "-pt", pane_id, "@pane-is-vim", 1 }
         end,
       })
     end,

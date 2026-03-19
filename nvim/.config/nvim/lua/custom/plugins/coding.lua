@@ -1,8 +1,7 @@
 local constants = require "custom.constants"
 local icons_constants = require "custom.constants.icons"
 local lazy_utils = require "custom.utils.lazy"
-local blink_cmp_utils = require "custom.utils-plugins.blink-cmp"
-local mini_utils = require "custom.utils-plugins.mini"
+local blink_cmp_utils = require "custom.plugins.utils.blink-cmp"
 local keymaps_utils = require "custom.utils.keymaps"
 local lang_utils = require "custom.utils.lang"
 
@@ -588,7 +587,7 @@ return {
       markdown = true,
     },
     config = function(_, opts)
-      mini_utils.mini_pairs(opts)
+      require("lazyvim.util.mini").pairs(opts)
     end,
   },
 

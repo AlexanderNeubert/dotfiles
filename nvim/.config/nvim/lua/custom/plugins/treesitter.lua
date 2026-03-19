@@ -1,6 +1,6 @@
 local constants = require "custom.constants"
 local lazy_utils = require "custom.utils.lazy"
-local treesitter_utils = require "custom.utils-plugins.treesitter"
+local treesitter_utils = require "custom.plugins.utils.treesitter"
 
 return {
   {
@@ -78,13 +78,13 @@ return {
           if treesitter_utils.have(ev.match, "indents") then
             local exclude_filetypes = { "html", "yaml", "lua", "javascript" }
             if not vim.tbl_contains(exclude_filetypes, ev.match) then
-              vim.bo.indentexpr = [[%!v:lua.require('custom.utils-plugins.treesitter').indentexpr()]]
+              vim.bo.indentexpr = [[%!v:lua.require('custom.plugins.utils.treesitter').indentexpr()]]
             end
           end
 
           -- folds
           if treesitter_utils.have(ev.match, "folds") then
-            vim.wo.foldexpr = [[%!v:lua.require('custom.utils-plugins.treesitter').foldexpr()]]
+            vim.wo.foldexpr = [[%!v:lua.require('custom.plugins.utils.treesitter').foldexpr()]]
           end
         end,
       })

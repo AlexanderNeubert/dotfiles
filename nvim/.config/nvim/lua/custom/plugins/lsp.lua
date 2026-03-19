@@ -3,7 +3,7 @@ local icons_constants = require "custom.constants.icons"
 local lazy_utils = require "custom.utils.lazy"
 local lsp_utils = require "custom.utils.lsp"
 local format_utils = require "custom.utils.format"
-local blink_cmp_utils = require "custom.utils-plugins.blink-cmp"
+local blink_cmp_utils = require "custom.plugins.utils.blink-cmp"
 
 return {
   {

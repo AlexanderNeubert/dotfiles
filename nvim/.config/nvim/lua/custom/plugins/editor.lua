@@ -3,7 +3,7 @@ local lsp_utils = require "custom.utils.lsp"
 local lazyvim_utils = require "custom.utils.lazyvim"
 local keymaps_utils = require "custom.utils.keymaps"
 local icons_constants = require "custom.constants.icons"
-local snacks_utils = require "custom.utils-plugins.snacks"
+local snacks_utils = require "custom.plugins.utils.snacks"
 
 return {
   {
