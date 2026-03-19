@@ -612,77 +612,14 @@ return {
     event = "VeryLazy",
     config = function()
       local reactive = require "reactive"
-      local ok, C = pcall(require, "poimandres.palette")
-      if not ok then
-        return reactive.setup()
-      end
 
-      local function should_skip_common(bufnr)
-        local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-        local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
-        return vim.tbl_contains(constants.exclude_filetypes, filetype)
-          or vim.tbl_contains(constants.exclude_buftypes, buftype)
-          or editor_utils.is_bigfile(bufnr, constants.big_file_mb)
-      end
-
-      reactive.add_preset {
-        name = "poimandres-reactive",
-        skip = {
-          winhl = function()
-            local bufnr = vim.api.nvim_get_current_buf()
-            return constants.transparent_background or should_skip_common(bufnr)
-          end,
-          hl = function()
-            local bufnr = vim.api.nvim_get_current_buf()
-            return should_skip_common(bufnr)
-          end,
-        },
-        modes = {
-          n = {
-            winhl = {
-              CursorLine = { bg = C.background1 },
-            },
-            hl = {
-              Cursor = { fg = C.background2, bg = C.blue2 },
-            },
-          },
-          i = {
-            winhl = {
-              CursorLine = { bg = C.teal3 },
-            },
-            hl = {
-              Cursor = { fg = C.background2, bg = C.teal1 },
-            },
-          },
-          [{ "v", "V", "\x16" }] = {
-            winhl = {
-              CursorLine = { bg = C.blueGray3 },
-            },
-            hl = {
-              Cursor = { fg = C.background2, bg = C.yellow },
-            },
-          },
-          R = {
-            winhl = {
-              CursorLine = { bg = C.pink3 },
-            },
-            hl = {
-              Cursor = { fg = C.background2, bg = C.pink2 },
-            },
-          },
-        },
-        static = {
-          winhl = {
-            active = {
-              CursorLine = { bg = C.background1 },
-            },
-            inactive = {
-              CursorLine = { bg = C.background3 },
-            },
-          },
+      reactive.setup {
+        builtin = {
+          cursorline = true,
+          cursor = true,
+          modemsg = true,
         },
       }
-      reactive.setup()
     end,
   },
 }
