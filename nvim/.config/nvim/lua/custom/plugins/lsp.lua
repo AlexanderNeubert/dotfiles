@@ -333,7 +333,7 @@ return {
     },
     config = vim.schedule_wrap(function(_, opts)
       -- slow down log file growth
-      vim.lsp.set_log_level(vim.log.levels.ERROR)
+      vim.lsp.log.set_level(vim.log.levels.ERROR)
 
       -- setup lsp formatter
       format_utils.register(lsp_utils.formatter())
