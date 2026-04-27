@@ -2,12 +2,12 @@
 # Fonts
 # =============================================================================
 
-# font-family = "JetBrainsMono Nerd Font"
-# font-style = Regular
-font-family = "GeistMono Nerd Font Medium"
+font-family = "GeistMono Nerd Font Mono"
+font-style = Medium
 font-size = 13.5
-
 font-feature = +calt,+liga,+clig
+# Keep ligatures visible while typing at the cursor.
+font-shaping-break = no-cursor
 
 # =============================================================================
 # Colors — Poimandres
@@ -15,13 +15,10 @@ font-feature = +calt,+liga,+clig
 
 foreground = #a6accd
 background = #1b1e28
-
 cursor-color = #a6accd
 cursor-text = #1b1e28
-
 selection-foreground = #1b1e28
 selection-background = #a6accd
-
 palette = 0=#1b1e28
 palette = 1=#d0679d
 palette = 2=#5de4c7
@@ -38,23 +35,16 @@ palette = 12=#89ddff
 palette = 13=#fcc5e9
 palette = 14=#add7ff
 palette = 15=#ffffff
-
 background-opacity = 0.9
-
-# Optional: apply opacity even when apps like Neovim/Tmux paint cell backgrounds.
-# Use this only if Neovim still looks too opaque.
 background-opacity-cells = true
 
 # =============================================================================
-# Window — macOS-compatible
+# Window
 # =============================================================================
 
-window-theme = auto
 macos-titlebar-style = tabs
 window-padding-x = 14
-# window-padding-y = 14
 window-padding-color = extend
-confirm-close-surface = false
 resize-overlay = never
 
 # =============================================================================
@@ -63,15 +53,13 @@ resize-overlay = never
 
 cursor-style = block
 cursor-style-blink = false
-
-# Prevent shell integration from changing the cursor shape.
 shell-integration-features = no-cursor,ssh-env
 
 # =============================================================================
 # Mouse
 # =============================================================================
 
-mouse-scroll-multiplier = 0.95
+mouse-scroll-multiplier = precision:0.95,discrete:3
 
 # =============================================================================
 # Keybinds
