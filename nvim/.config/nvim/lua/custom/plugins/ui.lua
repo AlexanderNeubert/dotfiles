@@ -606,20 +606,4 @@ return {
       end
     end,
   },
-
-  {
-    "rasulomaroff/reactive.nvim",
-    event = "VeryLazy",
-    config = function()
-      local reactive = require "reactive"
-
-      reactive.setup {
-        builtin = {
-          cursorline = true,
-          cursor = true,
-          modemsg = true,
-        },
-      }
-    end,
-  },
 }
