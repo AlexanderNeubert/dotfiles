@@ -65,5 +65,7 @@ mouse-scroll-multiplier = precision:0.95,discrete:3
 # Keybinds
 # =============================================================================
 
+macos-option-as-alt = left
+
 keybind = alt+arrow_left=unbind
 keybind = alt+arrow_right=unbind
