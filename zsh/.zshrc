@@ -22,10 +22,23 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
 
+# Tab: accept autosuggestion when visible, otherwise complete normally.
+_autosuggest_or_complete() {
+  if [[ -n "$POSTDISPLAY" ]]; then
+    zle autosuggest-accept
+  else
+    zle expand-or-complete
+  fi
+}
+zle -N _autosuggest_or_complete
+bindkey '^I' _autosuggest_or_complete
+bindkey -M viins '^I' _autosuggest_or_complete
+
 # homebrew
 export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export PATH=$PATH:/opt/homebrew/bin
 export PATH=/Users/ane/.local/bin:$PATH
+export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
 
 #XDG_CONFIG_HOME
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -52,7 +65,7 @@ eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
 
 # Mutliple nvim configurations
-alias lazy='NVIM_APPNAME=lazyNvim nvim'
+# alias lazy='NVIM_APPNAME=lazyNvim nvim'
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
